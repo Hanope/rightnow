@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.typeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>로그인</title>
+</head>
+<body>
+<div>
+
+    <h1>RightNow Login System</h1>
+
+    <form th:action="@{/loginProcessing}" method="post">
+        <h2>Login Form</h2>
+
+        <div th:if="${param.error}">
+            올바르지 않은 정보입니다.
+        </div>
+
+        <input type="text" name="username" placeholder="아이디" required="required"/>
+        <input type="password" name="password" placeholder="비밀번호" required="required"/>
+        <input type="submit" value="로그인"/>
+    </form>
+
+</div>
+</body>
+</html>

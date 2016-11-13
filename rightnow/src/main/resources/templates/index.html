@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Right Now</title>
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/heroic-features.css" rel="stylesheet">
+    <link href="/css/4-col-portfolio.css" rel="stylesheet">
+	<link href="/css/modal.css" rel="stylesheet">
+
+	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <style type="text/css">
+			body {
+				padding-top: 50px;
+				padding-bottom: 20px;
+			}
+
+			.carousel {
+				height: 500px;
+				margin-bottom: 60px;
+			}
+
+			.carousel-inner > .item > img {
+				min-width: 100%;
+				height: 500px;
+			}
+
+			.carousel-inner .carousel-caption {
+				padding-left: 30px;
+				padding-right: 30px;
+			}
+
+			/** 캐러셀의 반응형 기능 */
+			@media (min-width: 768px) {
+				.carousel-caption p {
+					margin-bottom: 20px;
+					font-size: 21px;
+					line-height: 1.4;
+				}
+			}
+	</style>
+</head>
+
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+    <div class="container">
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-exl-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Right Now</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a class="page-scroll" href="#page-top">Home</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#about">About</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#service">Planer</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#review">Review</a>
+                    </li>
+                </ul>
+				<div class="navbar-form navbar-right">
+					<button class="btn btn-success" data-toggle="modal" data-target="#login-modal">로그인</button>
+					<button class="btn btn-warning" data-toggle="modal" data-target="#sign-in-modal">회원가입</button>
+				</div>
+			</div>
+            <!-- /.navbar-collapse -->
+
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <!-- 캐러셀 영역 구성 -->
+		<span sec:authentication="id"></span>
+
+
+		<div id="carousel-generic" class="carousel slide" data-ride="carousel">
+			<!-- 현재 위치 표시 -->
+			<ol class="carousel-indicators">
+				<li data-target="#carousel-generic" data-slide-to="0" class="active"></li>
+				<li data-target="#carousel-generic" data-slide-to="1"></li>
+				<li data-target="#carousel-generic" data-slide-to="2"></li>
+			</ol>
+
+			<!-- 내용 영역 -->
+			<div class="carousel-inner">
+				<!-- 항목 (1) -->
+				<div class="item active">
+					<img src="/img/hotel1.png" alt="슬라이더(1)">
+						<div class="carousel-caption">
+							<p>지금당장 Right now를 통해서</p>
+						</div>
+				</div>
+
+				<!-- 항목 (2) -->
+				<div class="item">
+					<img src="/img/hotel2.png" alt="슬라이더(2)">
+						<div class="carousel-caption">
+							<p>여행계획을 세우세요!</p>
+						</div>
+				</div>
+
+				<!-- 항목 (3) -->
+				<div class="item">
+					<img src="/img/tour.png" alt="슬라이더(3)">
+						<div class="carousel-caption">
+							<p>이 서비스가 모두 무료입니다!</p>
+						</div>
+				</div>
+			</div>
+			<!-- // 내용영역 -->
+
+			<!-- 이동 버튼 -->
+			<a class="left carousel-control" href="#carousel-generic" data-slide="prev"> <span class="icon-prev"></span> </a>
+			<a class="right carousel-control" href="#carousel-generic" data-slide="next"> <span class="icon-next"></span> </a>
+		</div>
+		<!-- 캐러셀 영역 끝 -->
+		
+		<!-- 기능소개 영역 -->
+		<section id="about">
+	        <div class="row">
+	            <div class="col-lg-12">
+	                <h1 class="page-header"><center>About</center></h1>
+	            </div>
+	        </div>
+	
+	        <div class="row">
+	            <div class="col-sm-4">
+	                <center><img class="img-circle img-responsive img-center" src="http://placehold.it/300x300" alt=""></center>
+	                <h2><center>빅데이터</center></h2>
+	                <center><p>저희 Right Now는 빅데이터 기반으로 사용자에게 최적화된 서비스를 제공합니다.</p></center>
+	            </div>
+	            <div class="col-sm-4">
+	                <center><img class="img-circle img-responsive img-center" src="http://placehold.it/300x300" alt=""></center>
+	                <h2><center>여행계획</center></h2>
+	                <center><p>일정한 금액과 비용입력만으로 여행일정을 세워 드립니다.</p></center>
+	            </div>
+	            <div class="col-sm-4">
+	                <center><img class="img-circle img-responsive img-center" src="http://placehold.it/300x300" alt=""></center>
+	                <h2><center>무료</center></h2>
+	                <center><p>이 여행계획 서비스는 전부 무료입니다!</p></center>
+	            </div>
+	        </div>
+		</section>
+		
+		<!-- 기능소개 영역 끝 -->
+        
+        <!-- function Title -->
+        <section id="service">
+	        <div class="row">
+	            <div class="col-lg-12">
+	                <h1 class="page-header"><center>Planer</center></h1>
+	            </div>
+	            <div class="col-lg-12">
+	                <center><small>앞으로의 계획은 여행만들기 기능을 추가하는 것입니다.</small></center>
+	            </div>
+	        </div>
+        </section>
+        <!-- /.row -->
+        
+        <!-- Page Heading -->
+        <section id="review">
+	        <div class="row">
+	            <div class="col-lg-12">
+	                <h1 class="page-header"><center>Review</center></h1>
+	            </div>
+	        </div>
+	        <!-- /.row -->
+	
+	        <!-- review-row -->
+	        <div class="review-row">
+
+	        </div>
+	        <!-- /.review-row -->
+
+	        <!-- Pagination -->
+        </section>
+        <!-- /.row -->
+        <hr>
+        <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <center><p>Copyright &copy; Right Now Website 2016</p></center>
+                </div>
+            </div>
+        </footer>
+    <!-- /.container -->
+
+	</div>
+
+	<div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+		<div class="modal-dialog">
+			<div class="loginmodal-container">
+				<h1>로그인</h1><br>
+				<input type="text" id="login-id" name="username" placeholder="아이디">
+				<input type="password" id="login-pw" name="password" placeholder="비밀번호">
+				<button type="button" id="login-btn" name="login" class="login loginmodal-submit">로그인</button>
+			</div>
+		</div>
+	</div>
+
+
+	<!--/Login Modal-->
+
+	<!--Sign in Modal-->
+	<div class="modal fade" id="sign-in-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+		<div class="modal-dialog">
+			<div class="loginmodal-container">
+				<h1>회원가입</h1><br>
+				<input type="text" id="sign-id" class="form-control has-error" name="id" placeholder="아이디" required>
+				<label class="sign-msg"></label>
+				<input type="password" id="sign-pw" class="form-control" name="password" placeholder="비밀번호" required>
+				<input type="text" id="sign-name" class="form-control" name="name" placeholder="이름" required>
+				<input type="text" id="sign-tel" class="form-control" name="tel" placeholder="핸드폰 번호" required>
+				<button type="button" id="sign-btn" class="sign loginmodal-submit">회원가입</button>
+			</div>
+		</div>
+	</div>
+	<!--/Sign in Modal-->
+
+</body>
+<!-- jQuery -->
+<script src="/js/jquery.js"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+<!-- Scrolling Nav JavaScript -->
+<script src="/js/jquery.easing.min.js"></script>
+<script src="/js/scrolling-nav.js"></script>
+
+<script>
+	$('#sign-btn').click(function() {
+		var obj;
+
+		$.ajax({
+			type: "POST",
+			url: "/member/join",
+			data: {	"id" : $('#sign-id').val(),
+				"password" : $('#sign-pw').val(),
+				"name" : $('#sign-name').val(),
+				"tel" : $('#sign-tel').val() },
+			success: function(json) {
+				obj = json;
+				var message = json['message'];
+
+				alert(message);
+			}
+		});
+	});
+
+	$('#sign-id').keyup(function() {
+		$.ajax({
+			type: "GET",
+			url: "/member/idCheck",
+			data: {"memberId" : $('#sign-id').val()},
+			success: function(json) {
+				var result = json['result'];
+				var message = json['message'];
+
+				if(result == 'success')
+					$('.sign-msg').text('사용 가능한 아이디입니다');
+				else
+					$('.sign-msg').text('이미 존재하는 아이디입니다.');
+			}
+		});
+	});
+
+	$('#login-btn').click(function() {
+		var obj;
+
+		$.ajax({
+			type: "POST",
+			url: "/loginProcessing",
+			data: {	"username" : $('#login-id').val(),
+					"password" : $('#login-pw').val()},
+			success: function() {
+				alert('로그인 성공');
+			}, error: function() {
+				alert('로그인 정보가 올바르지 않습니다.');
+			}
+		});
+	});
+
+	function callAjax(page) {
+		$.ajax({
+			url: 'http://localhost:8080/board?page=' + page,
+			type: 'GET',
+			dataType: 'json',
+			success: function(object) {
+				var size = object.length;
+
+				for(var i=0; i<size; i++) {
+					var title = object[i]['title'];
+					var content = object[i]['content'];
+					var imgSrc;
+
+					try {
+						imgSrc = object[i]['imageFileList'][0]['src'];
+					} catch(e) {
+						imgSrc = "./img/default.png";
+					}
+
+					createRow(title, content, imgSrc);
+				}
+			}
+		});
+	}
+
+	function createRow(title, content, imgSrc) {
+		var parent = '.review-row';
+		var text = '<div class="board-container">' +
+						'<a href="#">' +
+							'<img src="' + imgSrc + '">' +
+							'<span>' + title + '</span>' +
+						'</a>' +
+					'</div>';
+
+		$(parent).append(text);
+	}
+
+	$(document).ready(function() {
+		var page = 0;
+		var win = $(window);
+
+		callAjax(page++);
+
+		win.scroll(function() {
+			if($(document).height() - win.height() == win.scrollTop()) {
+				setTimeout(function() { callAjax(page) }, 600);
+				page++;
+			}
+		})
+	});
+
+	callAjax(0);
+</script>
+
+</html>

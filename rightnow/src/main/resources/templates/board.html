@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Board Loading Test</title>
+    <script src="https://code.jquery.com/jquery.min.js"></script>
+    <style>
+        img {
+            width: 200px;
+            height: 200px;
+        }
+
+        #loading {
+            position: absolute;
+            width: 100%;
+            height: 30%;
+
+            top: 50%;
+            background-color: darkgray;
+            text-align: center;
+            font-size: 7em;
+        }
+    </style>
+</head>
+<body>
+<table id='test_table'>
+
+</table>
+
+</body>
+<script>
+    function callAjax(page) {
+        $.ajax({
+            url: 'http://localhost:8080/board?page=' + page,
+            type: 'GET',
+            dataType: 'json',
+            success: function(object) {
+                var json = object['content'];
+                var size = json.length;
+
+                for(var i=0; i<size; i++) {
+                    var title = json[i]['title'];
+                    var imgSrc = json[i]['imageFileList'][0]['src'];
+                    var content = json[i]['content'];
+
+                    createRow(title, content, imgSrc);
+                }
+            }
+        });
+    }
+
+    function createRow(title, content, imgSrc) {
+        var tableName = '#test_table';
+        var text = '<tr>' +
+                '<td><img src="' + imgSrc + '"/></td>' +
+                '<td>' + title + '</td>' +
+                '<td>' + content + '</td>' +
+                '</tr>';
+
+        $(tableName).append(text);
+    }
+
+    $(document).ready(function() {
+        var page = 1;
+        var win = $(window);
+
+        win.scroll(function() {
+            if($(document).height() - win.height() == win.scrollTop()) {
+                setTimeout(function() { callAjax(page) }, 600);
+                page++;
+            }
+        })
+    });
+
+    callAjax(0);
+</script>
+</html>

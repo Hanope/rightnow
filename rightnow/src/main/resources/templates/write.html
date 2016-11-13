@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.typeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>글쓰기</title>
+    <script src="https://code.jquery.com/jquery.min.js"></script>
+</head>
+<body>
+<!--<form id="upload-form">-->
+<form th:action="@{/board/write}" method="post" enctype="multipart/form-data">
+    <table>
+        <tr>
+            <td>제목</td>
+            <td><input type="text" name="title" id="title"></td>
+        </tr>
+        <tr>
+            <td>내용</td>
+            <td><input type="text" name="content" id="content"></td>
+        </tr>
+        <tr>
+            <td>파일 업로드</td>
+            <td><input id="upload-file-input" type="file" name="uploadfile" accept="image/*" /></td>
+        </tr>
+        <tr>
+            <td><button id="btn_submit">작성</button></td>
+            <td><button>취소</button></td>
+        </tr>
+    </table>
+</form>
+</body>
+<script>
+    $(document).ready(function() {
+//        $("#upload-file-input").on("change", uploadFile);
+    });
+
+    function uploadFile() {
+        $.ajax({
+            url: "/uploadFile",
+            type: "POST",
+            data: new FormData($("#upload-form")[0]),
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            success: function () {
+                alert('업로드 완료');
+            },
+            error: function () {
+                alert('업로드 실패');
+            }
+        });
+    }
+</script>
+</html>
