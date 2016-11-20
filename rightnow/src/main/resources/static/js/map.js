@@ -79,50 +79,59 @@ function getLatLng(location) {
 function showSchedule(json) {
     var text;
 
-    var departureTime = json['routes'][0]['legs'][0]['departure_time']['text'];
-    var arrivalTime = json['routes'][0]['legs'][0]['arrival_time']['text'];
-    var totalDistance = json['routes'][0]['legs'][0]['distance']['text'];
-    var totalDuration = json['routes'][0]['legs'][0]['duration']['text'];
-    var step = json['routes'][0]['legs'][0]['steps'];
+    try {
+        var departureTime = json['routes'][0]['legs'][0]['departure_time']['text'];
+        var arrivalTime = json['routes'][0]['legs'][0]['arrival_time']['text'];
+        var totalDistance = json['routes'][0]['legs'][0]['distance']['text'];
+        var totalDuration = json['routes'][0]['legs'][0]['duration']['text'];
+        var step = json['routes'][0]['legs'][0]['steps'];
 
-    text = '출발시간 : ' + departureTime + '\n' +
+        text = '출발시간 : ' + departureTime + '\n' +
             '도착시간 : ' + arrivalTime + '\n' +
             '총거리 : ' + totalDistance  + '\n' +
             '총시간 : ' + totalDuration  + '\n';
 
-    for(i in step) {
-        var travelMode = step[i]['travel_mode'];
-        var distance = step[i]['distance']['text'];
-        var duration = step[i]['duration']['text'];
-        var instructions = step[i]['instructions'];
+        for(i in step) {
+            var travelMode = step[i]['travel_mode'];
+            var distance = step[i]['distance']['text'];
+            var duration = step[i]['duration']['text'];
+            var instructions = step[i]['instructions'];
 
-        var cnt = parseInt(i) + 1;
+            var cnt = parseInt(i) + 1;
 
 
-        text += '\n-----------' + cnt + '-----------\n' +
+            text += '\n-----------' + cnt + '-----------\n' +
                 '이동안내 : ' + instructions + '\n' +
                 '이동거리 : ' + distance + '\n' +
                 '이동시간 : ' + duration + '\n';
 
-        if(travelMode != 'WALKING') {
-            var departureLocation = step[i]['transit']['departure_stop']['name'];
-            var departureTime = step[i]['transit']['departure_time']['name'];
-            var arrivalLocation = step[i]['transit']['arrival_stop']['name'];
-            var arrivalTime = step[i]['transit']['arrival_time']['text'];
-            var lineNumber = step[i]['transit']['line']['short_name'];
-            var vehichle = step[i]['transit']['line']['vehicle']['name'];
-            var headsign = step[i]['transit']['headsign'];
+            if(travelMode != 'WALKING') {
+                var departureLocation = step[i]['transit']['departure_stop']['name'];
+                var departureTime = step[i]['transit']['departure_time']['text'];
+                var arrivalLocation = step[i]['transit']['arrival_stop']['name'];
+                var arrivalTime = step[i]['transit']['arrival_time']['text'];
+                var lineNumber = step[i]['transit']['line']['short_name'];
+                var vehichle = step[i]['transit']['line']['vehicle']['name'];
+                var headsign = step[i]['transit']['headsign'];
 
 
-            text += '교통수단 : ' + vehichle + ' ' + lineNumber + '\n' +
-                '이동방향 : ' + headsign + '\n'
-                '출발장소 : ' + departureLocation + '\n' +
+                text += '교통수단 : ' + vehichle + ' ' + lineNumber + '\n' +
+                    '이동방향 : ' + headsign + '\n' +
+                '승차장소 : ' + departureLocation + '\n' +
                 '출발시간 : ' + departureTime + '\n' +
-                '도착장소 : ' + arrivalLocation + '\n' +
+                '하차장소 : ' + arrivalLocation + '\n' +
                 '도착시간 : ' + arrivalTime + '\n\n';
-        }
+            }
 
+        }
+    } catch(e) {
+        var totalDistance = json['routes'][0]['legs'][0]['distance']['text'];
+        var totalDuration = json['routes'][0]['legs'][0]['duration']['text'];
+
+        text = '총거리 : ' + totalDistance  + '\n' +
+                '총시간 : ' + totalDuration  + '\n';
     }
+
 
     $('#plan_result').html(text);
 }
