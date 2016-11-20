@@ -1,9 +1,12 @@
 package com.rightnow.controller;
 
+import com.rightnow.details.LoginUserDetails;
 import com.rightnow.domain.Member;
 import com.rightnow.repository.MemberRepository;
 import com.rightnow.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.support.SecurityContextProvider;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -61,5 +64,10 @@ public class MemberController {
         json.put("message", message);
 
         return json;
+    }
+
+    @RequestMapping(value = "/getName", method = RequestMethod.GET)
+    public String getMember() {
+        return memberService.getMemberId();
     }
 }

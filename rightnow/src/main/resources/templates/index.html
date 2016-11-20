@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,6 +18,10 @@
 			body {
 				padding-top: 50px;
 				padding-bottom: 20px;
+			}
+
+			textarea {
+				resize: none;
 			}
 
 			.carousel {
@@ -42,6 +46,12 @@
 					font-size: 21px;
 					line-height: 1.4;
 				}
+			}
+
+			#map {
+				position: relative;
+				width: 100%;
+				height: 300px;
 			}
 	</style>
 </head>
@@ -70,15 +80,22 @@
                         <a class="page-scroll" href="#about">About</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#service">Planer</a>
+                        <a class="page-scroll" href="#service">Planner</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="#review">Review</a>
                     </li>
+					<li id="btn_review_write">
+						<a class="page-scroll" href="#reviewWriteModal" class="portfolio-link" data-toggle="modal">Write</a>
+					</li>
                 </ul>
-				<div class="navbar-form navbar-right">
+				<div class="navbar-form navbar-right" id="unlogin">
 					<button class="btn btn-success" data-toggle="modal" data-target="#login-modal">로그인</button>
 					<button class="btn btn-warning" data-toggle="modal" data-target="#sign-in-modal">회원가입</button>
+				</div>
+				<div class="navbar-form navbar-right" id="logined" hidden="true">
+					<span style="color: white" id="memberName">님 환영합니다.</span>
+					<a href="./logout"><button class="btn btn-warning">로그아웃</button></a>
 				</div>
 			</div>
             <!-- /.navbar-collapse -->
@@ -88,9 +105,6 @@
 
     <!-- Page Content -->
     <!-- 캐러셀 영역 구성 -->
-		<span sec:authentication="id"></span>
-
-
 		<div id="carousel-generic" class="carousel slide" data-ride="carousel">
 			<!-- 현재 위치 표시 -->
 			<ol class="carousel-indicators">
@@ -166,10 +180,42 @@
         <section id="service">
 	        <div class="row">
 	            <div class="col-lg-12">
-	                <h1 class="page-header"><center>Planer</center></h1>
+	                <h1 class="page-header"><center>Planner</center></h1>
 	            </div>
-	            <div class="col-lg-12">
-	                <center><small>앞으로의 계획은 여행만들기 기능을 추가하는 것입니다.</small></center>
+	            <div class="row">
+					<div class="col-md-5">
+						<div id="map"></div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="form-group">
+							<label for="start">출발지</label>
+							<select class="form-control input-small" id="start">
+								<option value="current">현재 위치</option>
+								<option value="dongyang">동양미래대학교</option>
+								<option value="gocheckdom">고척돔</option>
+								<option value="namsanTower">남산타워</option>
+								<option value="gwanghwamun">광화문</option>
+							</select>
+
+							<label for="end">도착지</label>
+							<select class="form-control" id="end">
+								<option value="current">현재 위치</option>
+								<option value="dongyang">동양미래대학교</option>
+								<option value="gocheckdom">고척돔</option>
+								<option value="namsanTower">남산타워</option>
+								<option value="gwanghwamun">광화문</option>
+							</select>
+
+							<button type="button" class="btn btn-primary" id="btn-make-plan">조회</button>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<h5>Data</h5>
+						<pre id="plan_result"></pre>
+					</div>
+
 	            </div>
 	        </div>
         </section>
@@ -183,8 +229,8 @@
 	            </div>
 	        </div>
 	        <!-- /.row -->
-	
-	        <!-- review-row -->
+
+			<!-- review-row -->
 	        <div class="review-row">
 
 	        </div>
@@ -236,6 +282,64 @@
 	</div>
 	<!--/Sign in Modal-->
 
+	<!-- Review Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+		<div class="vertical-alignment-helper">
+			<div class="modal-dialog vertical-align-center">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+
+						</button>
+						<h4 class="modal-title" id="board_title"></h4>
+
+					</div>
+					<div class="modal-body"><img id="board_img"></div>
+					<div class="modal-body"><span id="board_content"></span></div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--/Review Modal-->
+
+	<!-- Review Write Modal -->
+	<div class="modal fade" id="reviewWriteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+		<div class="vertical-alignment-helper">
+			<div class="modal-dialog vertical-align-center">
+				<div class="modal-content">
+					<form method="post" enctype="multipart/form-data" id="frmReview">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+
+							</button>
+							<div class="form-group">
+								<label for="write_title">제목</label>
+								<input id="write_title" name="title" class="form-control"/>
+							</div>
+
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<label for="write_content">내용</label>
+								<textarea id="write_content" name="content" cols="30" rows="10" class="form-control"></textarea>
+								<label for="upload_img"></label>
+								<input id="upload_img" name="uploadfile" type="file" accept="image/*" />
+							</div>
+						</div>
+						<div class="modal-footer">
+							<input type="submit" class="btn btn-primary" id="review_write" value="글쓰기"/>
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--/Review Write Modal-->
+
 </body>
 <!-- jQuery -->
 <script src="/js/jquery.js"></script>
@@ -261,6 +365,7 @@
 				var message = json['message'];
 
 				alert(message);
+				$('#login-modal').modal('toggle');
 			}
 		});
 	});
@@ -292,6 +397,8 @@
 					"password" : $('#login-pw').val()},
 			success: function() {
 				alert('로그인 성공');
+				checkSession();
+				$('#login-modal').modal('toggle');
 			}, error: function() {
 				alert('로그인 정보가 올바르지 않습니다.');
 			}
@@ -300,7 +407,7 @@
 
 	function callAjax(page) {
 		$.ajax({
-			url: 'http://localhost:8080/board?page=' + page,
+			url: '/board?page=' + page,
 			type: 'GET',
 			dataType: 'json',
 			success: function(object) {
@@ -310,6 +417,7 @@
 					var title = object[i]['title'];
 					var content = object[i]['content'];
 					var imgSrc;
+					var idx = object[i]['idx'];
 
 					try {
 						imgSrc = object[i]['imageFileList'][0]['src'];
@@ -317,21 +425,20 @@
 						imgSrc = "./img/default.png";
 					}
 
-					createRow(title, content, imgSrc);
+					createRow(title, idx, imgSrc);
 				}
 			}
 		});
 	}
 
-	function createRow(title, content, imgSrc) {
+	function createRow(title, idx, imgSrc) {
 		var parent = '.review-row';
-		var text = '<div class="board-container">' +
-						'<a href="#">' +
+		var text = '<a href="#myModal" class="portfolio-link" data-toggle="modal">' +
+						'<div class="board-container" id="board_' + idx + '">' +
 							'<img src="' + imgSrc + '">' +
 							'<span>' + title + '</span>' +
-						'</a>' +
-					'</div>';
-
+						'</div>' +
+					'</a>';
 		$(parent).append(text);
 	}
 
@@ -339,17 +446,99 @@
 		var page = 0;
 		var win = $(window);
 
-		callAjax(page++);
-
 		win.scroll(function() {
 			if($(document).height() - win.height() == win.scrollTop()) {
-				setTimeout(function() { callAjax(page) }, 600);
-				page++;
+				setTimeout(function() { callAjax(page++) }, 600);
 			}
 		})
 	});
 
-	callAjax(0);
+	$(document).on('click', '.board-container', function() {
+		var getid = $(this).attr('id');
+		var idx = getid.split('_')[1];
+
+		$.ajax({
+			url: '/board/' + idx,
+			type: 'GET',
+				success : function (data) {
+					var title = data['title'];
+					var content = data['content'];
+					var date = data['date'];
+					var imgSrc;
+
+					try {
+						imgSrc = data['imageFileList'][0]['src'];
+					} catch(e) {
+						imgSrc = "./img/default.png";
+					}
+
+					$('#board_title').text(title);
+					$('#board_img').attr("src", imgSrc);
+					$('#board_content').text(content);
+			}
+		});
+	});
+
+	function checkSession() {
+		$.ajax({
+			type: "GET",
+			url: "/member/getName",
+			dataType: 'text',
+			success: function (data) {
+				showName(data);
+				showReviewWrite(data);
+			}
+		});
+	}
+
+	function showName(data) {
+		if (data == "") {
+			$('#unlogin').show();
+			$('#logined').hide();
+		} else {
+			$('#unlogin').hide();
+			$('#logined').show();
+
+			var msg = data + '님 환영합니다.';
+
+			$('#memberName').text(msg);
+		}
+	}
+
+	function showReviewWrite(data) {
+		if(data == "")
+			$('#btn_review_write').hide();
+		else
+			$('#btn_review_write').show();
+	}
+
+	$('#frmReview').submit(function(event) {
+		event.preventDefault();
+
+		var fd = new FormData($(this)[0]);
+
+		$.ajax({
+			url: "/board/write",
+			type: "POST",
+			data: fd,
+			async: false,
+			cache: false,
+			contentType: false,
+			processData: false,
+			success: function(data) {
+				alert('게시물이 등록되었습니다.');
+				$('#reviewWriteModal').modal('toggle');
+			},
+			error: function() {
+				alert('에러가 발생하였습니다.');
+			}
+		})
+	})
+
+	checkSession();
 </script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC19ZjyDOsyPWdRbHX_3pVYewO09LaoT64"></script>
+<script src="/js/map.js"></script>
 
 </html>
