@@ -8,6 +8,7 @@
     <title>Right Now</title>
 
     <link href="/css/bootstrap.min.css" rel="stylesheet">
+	<link href="/css/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="/css/heroic-features.css" rel="stylesheet">
     <link href="/css/4-col-portfolio.css" rel="stylesheet">
 	<link href="/css/modal.css" rel="stylesheet">
@@ -146,7 +147,7 @@
 			<a class="right carousel-control" href="#carousel-generic" data-slide="next"> <span class="icon-next"></span> </a>
 		</div>
 		<!-- 캐러셀 영역 끝 -->
-		
+
 		<!-- 기능소개 영역 -->
 		<section id="about">
 	        <div class="row">
@@ -154,7 +155,7 @@
 	                <h1 class="page-header"><center>About</center></h1>
 	            </div>
 	        </div>
-	
+
 	        <div class="row">
 	            <div class="col-sm-4">
 	                <center><img class="img-circle img-responsive img-center" src="http://placehold.it/300x300" alt=""></center>
@@ -173,15 +174,89 @@
 	            </div>
 	        </div>
 		</section>
-		
+
 		<!-- 기능소개 영역 끝 -->
-        
+
         <!-- function Title -->
         <section id="service">
 	        <div class="row">
 	            <div class="col-lg-12">
 	                <h1 class="page-header"><center>Planner</center></h1>
 	            </div>
+				<form class="form-inline" method="get">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="span2"><label>장소</label></div>
+							<div class="btn-group" data-toggle="buttons">
+								<label class="btn btn-default active span2">
+									<input type="radio" name="location" id="schedule-seoul" autocomplete="off" value="seoul" checked> 서울
+								</label>
+								<label class="btn btn-default span2 disabled">
+									대전
+								</label>
+								<label class="btn btn-default span2 disabled">
+									대구
+								</label>
+								<label class="btn btn-default span2 disabled">
+									부산
+								</label>
+								<label class="btn btn-default span2 disabled">
+									제주
+								</label>
+							</div>
+						</div>
+					</div>
+					<br>
+					<br>
+
+					<div class="row">
+						<div class="col-md-12">
+							<div class="span2"><label>테마</label></div>
+							<div class="btn-group" data-toggle="buttons">
+								<label class="btn btn-default active span2">
+									<input type="radio" name="theme" id="theme-eat" value="eat" checked> 먹는게 짱이지
+								</label>
+								<label class="btn btn-default span2">
+									<input type="radio" name="theme" id="theme-sleep" value="sleep"> 잠은 편안히
+								</label>
+							</div>
+						</div>
+					</div>
+
+					<br>
+					<br>
+
+					<div class="row">
+						<div class="col-md-12">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label for="startDate">출발날자 </label>
+									<input type="datetime-local" class="form-control" id="startDate">
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label for="endDate">도착날자 </label>
+									<input type="date" class="form-control" id="endDate">
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label for="money">여행비용 </label>
+									<input type="number" class="form-control" id="money">
+								</div>
+							</div>
+						</div>
+					</div>
+					<br>
+					<br>
+					<div class="col-md-4 col-md-offset-4">
+						<button type="button" class="btn btn-primary btn-md span3" id="btn-plan-search">검색</button>
+					</div>
+					<div class="col-md-4 col-md-offset-4">
+						<br><br>
+					</div>
+				</form>
 	            <div class="row">
 					<div class="col-md-5">
 						<div id="map"></div>
@@ -220,7 +295,7 @@
 	        </div>
         </section>
         <!-- /.row -->
-        
+
         <!-- Page Heading -->
         <section id="review">
 	        <div class="row">
@@ -533,7 +608,31 @@
 				alert('에러가 발생하였습니다.');
 			}
 		})
-	})
+	});
+
+	$('#btn-plan-search').click(function() {
+		var location = $("input[name='location']:checked").val();
+		var money = $('#money').val();
+		var startDate = $('#startDate').val();
+		var endDate = $('#endDate').val();
+		var theme = $("input[name='theme']:checked").val();
+
+		$.ajax({
+			url: "/schedule/make",
+			type: "GET",
+			data: {'location' : location,
+				   'money' : money,
+				   'startDate' : startDate,
+				   'endDate' : endDate,
+				   'theme' : theme},
+			success: function(json) {
+				var obj = JSON.stringify(json, null, "\t");
+
+				$('#plan_result').text("");
+				$('#plan_result').text(obj);
+			}
+		});
+	});
 
 	checkSession();
 </script>

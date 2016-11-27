@@ -36,4 +36,9 @@ public class TestController {
     String map() {
         return "map";
     }
+
+    @RequestMapping("/test")
+    String schedule() {
+        return "test";
+    }
 }
