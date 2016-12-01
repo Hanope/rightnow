@@ -1,6 +1,4 @@
 var totalMoney = 0;
-var position = [{lat : 37.500439, lng : 126.867633}];
-var depart_time = [];
 
 $('#btn-plan-search').click(function () {
     var location = $("input[name='location']:checked").val();
@@ -31,7 +29,6 @@ $('#btn-plan-search').click(function () {
             'theme': theme
         },
         success: function (json) {
-            obj = json;
             var t = JSON.stringify(json, null, "\t");
 
             $('#plan_result').text("");
@@ -43,9 +40,6 @@ $('#btn-plan-search').click(function () {
 });
 
 function makePlan(day) {
-    position = [{lat : 37.500439, lng : 126.867633}];
-    depart_time = [];
-
     $('.day_schedule').html('');
 
     if (day[0]['accommodation'] == null && day[0]['dinner'] == null) {
@@ -54,33 +48,34 @@ function makePlan(day) {
     }
 
     for (var i in day) {
-        var cnt = 0;
+        var cnt = 1;
 
         createDay(parseInt(i) + 1);
+        createDistance();
 
         if(day[i]['breakfast'] != null) {
-            createDistance(cnt, day[i]['breakfast']);
             createSchedule(day[i]['breakfast'], cnt++);
+            createDistance();
         }
         if(day[i]['event'] != null) {
-            createDistance(cnt, day[i]['event']);
             createSchedule(day[i]['event'], cnt++);
+            createDistance();
         }
         if(day[i]['lunch'] != null) {
-            createDistance(cnt, day[i]['lunch']);
             createSchedule(day[i]['lunch'], cnt++);
+            createDistance();
         }
         if(day[i]['tour'] != null) {
-            createDistance(cnt, day[i]['tour']);
             createSchedule(day[i]['tour'], cnt++);
+            createDistance();
         }
         if(day[i]['dinner'] != null) {
-            createDistance(cnt, day[i]['dinner']);
             createSchedule(day[i]['dinner'], cnt++);
+            createDistance();
         }
-        if(day[i]['accommodation'] != null)
-            createDistance(cnt, day[i]['accommodation']);
+        if(day[i]['accommodation'] != null) {
             createSchedule(day[i]['accommodation'], cnt++);
+        }
     }
 
     alert(totalMoney);
@@ -104,7 +99,7 @@ function createSchedule(schedule, cnt) {
     var longitude = schedule['longitude'];
     var text = '<div class="day_schedule_container">' +
                     '<div class="day_schedule_number_container">' +
-                        '<div class="day_schedule_number">' + cnt-1 + '</div>' +
+                        '<div class="day_schedule_number">' + cnt + '</div>' +
                     '</div>' +
                     '<div class="day_schedule_content_container">' +
                         '<div class="day_schedule_image">' +
@@ -129,8 +124,6 @@ function createSchedule(schedule, cnt) {
                     '</div>' +
                 '</div>' +
             '</div>';
-
-    position.push({lat : latitude, lng : longitude});
 
     totalMoney += schedule['price'];
     $('.day_schedule').append(text);
@@ -162,15 +155,9 @@ function createDay(day) {
                 '</div>';
 
     $('.day_schedule').append(text);
-    depart_time.push(date);
 }
 
-function createDistance(start, destination) {
-    var start_position = position[start];
-    var start_time = depart_time[start];
-
-    var distance_object = calcTime(start_position, position[index+1], depart_time[index]);
-
+function createDistance() {
     var text = '<div class="day_distance_container">' +
                     '<div class="day_distance_bar">' +
                         '<ul class="day_bar">' +

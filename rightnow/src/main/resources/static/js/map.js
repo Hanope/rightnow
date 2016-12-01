@@ -38,26 +38,6 @@ function initMap() {
     }
 }
 
-function calcTime(start, end, time) {
-    var departure_time = new Date(time).getTime() / 1000;
-    var origin = start['lat'] + ',' + start['lng'];
-    var destination = end['lat'] + ',' + end['lng'];
-    var key = 'AIzaSyC19ZjyDOsyPWdRbHX_3pVYewO09LaoT64';
-
-    $.ajax({
-        url: 'https://maps.googleapis.com/maps/api/directions/json',
-        type: 'GET',
-        data: {'origin' : origin,
-                'destination' : destination,
-                'key' : key,
-                'mode' : 'transit',
-                'departure_time' : departure_time},
-        success: function(result) {
-            console.log(result);
-        }
-    });
-}
-
 function calculateAndDisplayRoute(directionsService, directionsDisplay, start, end) {
     directionsService.route({
         origin: start,
