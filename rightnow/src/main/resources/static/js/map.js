@@ -2,20 +2,17 @@ var directionsService = new google.maps.DirectionsService;
 var directionsDisplay = new google.maps.DirectionsRenderer;
 var routeList = new Array();
 
-var start;
-var end;
 var map;
 var currentPos;
 
 $('#btn-make-plan').click(function() {
     var startLocation = $('#start').val();
     var endLocation = $('#end').val();
-
-    start = getLatLng(startLocation);
-    end = getLatLng(endLocation);
+    var start = getLatLng(startLocation);
+    var end = getLatLng(endLocation);
 
     directionsDisplay.setMap(map);
-    calculateAndDisplayRoute(directionsService, directionsDisplay);
+    calculateAndDisplayRoute(directionsService, directionsDisplay, start, end);
 });
 
 function initMap() {
@@ -33,10 +30,35 @@ function initMap() {
 
             map.setCenter(currentPos);
         });
+    } else {
+        currentPos = {
+            lat: 37.500439,
+            lng: 126.867633
+        }
     }
 }
 
-function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+function calcTime(start, end, time) {
+    var departure_time = new Date(time).getTime() / 1000;
+    var origin = start['lat'] + ',' + start['lng'];
+    var destination = end['lat'] + ',' + end['lng'];
+    var key = 'AIzaSyC19ZjyDOsyPWdRbHX_3pVYewO09LaoT64';
+
+    $.ajax({
+        url: 'https://maps.googleapis.com/maps/api/directions/json',
+        type: 'GET',
+        data: {'origin' : origin,
+                'destination' : destination,
+                'key' : key,
+                'mode' : 'transit',
+                'departure_time' : departure_time},
+        success: function(result) {
+            console.log(result);
+        }
+    });
+}
+
+function calculateAndDisplayRoute(directionsService, directionsDisplay, start, end) {
     directionsService.route({
         origin: start,
         destination: end,
@@ -52,6 +74,11 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
             routeList.push(response);
 
             showSchedule(response);
+
+
+            return response;
+
+
         } else {
             window.alert('Directions request failed due to ' + status);
         }

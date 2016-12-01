@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -23,7 +25,7 @@ public class ScheduleController {
     private ScheduleService scheduleService;
 
     @RequestMapping(value = "make", method = RequestMethod.GET)
-    public Map<String, Object> makeSchedule(HttpServletRequest request) {
+    public ArrayList<Object> makeSchedule(HttpServletRequest request) {
         String location = request.getParameter("location");
         int money = Integer.parseInt(request.getParameter("money"));
         String startDate = request.getParameter("startDate").replace("T", " ");

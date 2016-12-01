@@ -1,0 +1,156 @@
+.day_schedule {
+    height: 500px;
+    overflow: scroll;
+}
+
+.day_info_container {
+    background: #FFFFFF;
+    width: 100%;
+    height: 60px;
+    border-top: 1px solid #E5E5E5;
+    border-right: 1px solid #E5E5E5;
+    margin-top: 50px;
+}
+
+.day_text {
+    display: inline-block;
+    float: left;
+    width: 16%;
+    height: 100%;
+    background: #203341;
+    color: #FFFFFF;
+    font-size: 22px;
+    text-align: center;
+    font-weight: bold;
+    line-height: 55px;
+}
+
+.day_info_date {
+    display: inline-block;
+    color: #000000;
+    margin-top: 17px;
+    margin-left: 10px;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.day_schedule_container {
+    background: #FFFFFF;
+    width: 100%;
+    height: 150px;
+    border: 1px solid #E5E5E5;
+}
+
+.day_schedule_number_container {
+    width: 16%;
+    height: 100%;
+    float: left;
+}
+
+.day_schedule_number {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background: #1497FC;
+    border-radius: 50%;
+    margin-left: 35px;
+    margin-top: 55px;
+    font-size: 20px;
+    color: #FFFFFF;
+    font-weight: bold;
+    line-height:40px;
+    text-align: center;
+}
+
+.day_schedule_content_container {
+    width: 64%;
+    height: 100%;
+    float: left;
+}
+
+.day_schedule_image {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    margin-left: 10px;
+    margin-top: 20px;
+}
+
+.day_schedule_image img {
+    width: 100%;
+    height: 100%;
+}
+
+.day_schedule_content {
+    position: relative;
+    top: 25px;
+    margin-left: 20px;
+    display: inline-block;
+}
+
+.day_schedule_title {
+    font-size: 1em;
+    color: #000000;
+    font-weight: bold;
+}
+
+.day_schedule_rating {
+    color: orange;
+    font-size: 20px;
+}
+
+.day_schedule_price {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.day_distance_bar {
+    display: inline-block;
+    margin-left: 55px;
+}
+
+.day_bar {
+    padding: 0;
+}
+
+.day_bar li {
+    background: orange;
+    height: 3px;
+    width: 3px;
+    line-height: 0;
+    list-style: none outside none;
+    margin-top: 10px;
+    vertical-align: top;
+}
+
+.day_distance_text {
+    position: relative;
+    display: inline-block;
+    bottom: 20px;
+    margin-left: 58px;
+    color: #000000;
+    font-weight: bold;
+}
+
+.day_schedule_no {
+    color: #B1B1B1;
+    font-size: 30px;
+    position: relative;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.day_schedule_time_container {
+    width: 20%;
+    height: 100%;
+    float: right;
+    background: #92D050;
+}
+
+.day_schedule_time {
+    color: white;
+    font-size: 20px;
+    margin-top: 40px;
+    font-weight: bold;
+    text-align: center;
+}

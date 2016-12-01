@@ -12,11 +12,13 @@
     <link href="/css/heroic-features.css" rel="stylesheet">
     <link href="/css/4-col-portfolio.css" rel="stylesheet">
 	<link href="/css/modal.css" rel="stylesheet">
+	<link href="/css/plan.css" rel="stylesheet">
 
 	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <style type="text/css">
 			body {
+				background: #F8F8FA;
 				padding-top: 50px;
 				padding-bottom: 20px;
 			}
@@ -251,17 +253,79 @@
 					<br>
 					<br>
 					<div class="col-md-4 col-md-offset-4">
-						<button type="button" class="btn btn-primary btn-md span3" id="btn-plan-search">검색</button>
+						<button type="button" class="btn btn-primary" id="btn-plan-search">검색</button>
 					</div>
+
+					<div class="row">
+						<div class="col-md-7 day_schedule">
+
+
+							<!--<div class="day_info_container">-->
+								<!--<div class="day_text">Day1</div>-->
+								<!--<div class="day_info">-->
+									<!--<span class="day_info_date">2016.11.30 (수) 08:00 출발</span>-->
+								<!--</div>-->
+							<!--</div>-->
+
+							<!--<div class="day_schedule_container">-->
+								<!--<div class="day_schedule_number_container">-->
+									<!--<div class="day_schedule_number">1</div>-->
+								<!--</div>-->
+
+								<!--<div class="day_schedule_content_container">-->
+									<!--<div class="day_schedule_image">-->
+										<!--<img src="/img/default.png">-->
+									<!--</div>-->
+									<!--<div class="day_schedule_content">-->
+										<!--<div class="day_schedule_title">-->
+											<!--동양미래대학교-->
+										<!--</div>-->
+										<!--<div class="day_schedule_rating">-->
+											<!--★★★★☆-->
+										<!--</div>-->
+										<!--<div class="day_schedule_price">-->
+											<!--5,000원-->
+										<!--</div>-->
+									<!--</div>-->
+								<!--</div>-->
+
+								<!--<div class="day_schedule_time_container">-->
+									<!--<div class="day_schedule_time">-->
+										<!--<p>09:30</p>-->
+										<!--<p>~ 11:35</p>-->
+									<!--</div>-->
+								<!--</div>-->
+							<!--</div>-->
+
+							<!--<div class="day_distance_container">-->
+								<!--<div class="day_distance_bar">-->
+									<!--<ul class="day_bar">-->
+										<!--<li></li>-->
+										<!--<li></li>-->
+										<!--<li></li>-->
+									<!--</ul>-->
+								<!--</div>-->
+								<!--<div class="day_distance_text">-->
+									<!-- -> 10분 이동 (14시 20분 도착)-->
+								<!--</div>-->
+							<!--</div>-->
+
+
+							<!--<div class="day_schedule_container">-->
+								<!--<div class="day_schedule_no">조건에 맞는 일정이 없습니다.</div>-->
+							<!--</div>-->
+
+						</div>
+						<div class="col-md-5">
+							<div id="map"></div>
+						</div>
+					</div>
+
 					<div class="col-md-4 col-md-offset-4">
 						<br><br>
 					</div>
 				</form>
 	            <div class="row">
-					<div class="col-md-5">
-						<div id="map"></div>
-					</div>
-
 					<div class="col-md-3">
 						<div class="form-group">
 							<label for="start">출발지</label>
@@ -609,35 +673,11 @@
 			}
 		})
 	});
-
-	$('#btn-plan-search').click(function() {
-		var location = $("input[name='location']:checked").val();
-		var money = $('#money').val();
-		var startDate = $('#startDate').val();
-		var endDate = $('#endDate').val();
-		var theme = $("input[name='theme']:checked").val();
-
-		$.ajax({
-			url: "/schedule/make",
-			type: "GET",
-			data: {'location' : location,
-				   'money' : money,
-				   'startDate' : startDate,
-				   'endDate' : endDate,
-				   'theme' : theme},
-			success: function(json) {
-				var obj = JSON.stringify(json, null, "\t");
-
-				$('#plan_result').text("");
-				$('#plan_result').text(obj);
-			}
-		});
-	});
-
 	checkSession();
 </script>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC19ZjyDOsyPWdRbHX_3pVYewO09LaoT64"></script>
 <script src="/js/map.js"></script>
+<script src="/js/plan.js"></script>
 
 </html>

@@ -8,7 +8,9 @@ import com.rightnow.repository.TourRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -30,66 +32,90 @@ public class ScheduleService {
     @Autowired
     EventRepository eventRepository;
 
-    public Map<String, Object> makePlan(ScheduleCondition scheduleCondition) {
-        Map<String, Object> plan = new HashMap<>();
+    public ArrayList<Object> makePlan(ScheduleCondition scheduleCondition) {
+        ArrayList<Object> schedule = new ArrayList<>();
         int totalMoney = scheduleCondition.getMoney();
-        int balance = totalMoney;
         int departTime = scheduleCondition.getStartDate().getHourOfDay();
         int numOfSleep = scheduleCondition.getEndDate().getDayOfMonth() - scheduleCondition.getStartDate().getDayOfMonth();
-        int numOfEat = (numOfSleep + 1) * 3 - 1;
-        int numOfTour = (numOfSleep +1) * 2;
+        int numOfEat = numOfSleep > 0 ? (numOfSleep + 1) * 3 - 1 : 3;
+        int numOfTour = (numOfSleep + 1);
+        int numOfEvent = (numOfSleep + 1);
+        String theme = scheduleCondition.getTheme();
 
-        boolean eatFirst = true;
+        if (departTime > 7) {
+            numOfEat--;
 
-        if(departTime > 7 && departTime < 12) {
-            numOfEat -= 1;
-        } else if(departTime >= 12 && departTime < 18) {
-            numOfEat -= 2;
-        } else if(departTime >= 18 && departTime < 24) {
-            numOfEat -= 3;
+            if (departTime >= 12)
+                numOfEat--;
+
+            if (departTime >= 18) {
+                numOfEat--;
+                numOfTour--;
+            }
         }
 
         ScheduleWeight scheduleWeight = new ScheduleWeight(numOfEat, numOfSleep,
-                numOfTour, "eat", totalMoney);
+                numOfTour,theme , totalMoney);
 
-        Accomodation accomodation[] = new Accomodation[numOfSleep];
-        Cafeteria cafeteria[] = new Cafeteria[numOfEat];
-        Tour tour[] = new Tour[numOfTour/2];
-        Event event[] = new Event[numOfTour/2];
+        Map<String, Object> day = new LinkedHashMap<>();
+        day.put("day", "1Day");
+        day.put("breakfast", getCafeteria(scheduleWeight.getFoodMoney()));
+        day.put("event", getEvent(scheduleWeight.getTourMoney()));
+        day.put("lunch", getCafeteria(scheduleWeight.getFoodMoney()));
+        day.put("tour", getTour(scheduleWeight.getTourMoney()));
+        day.put("dinner", getCafeteria(scheduleWeight.getFoodMoney()));
 
-        for(int i=0; i<numOfEat; i++) {
-            cafeteria[i] = getCafeteria(scheduleWeight.getFoodMoney());
-            balance -= cafeteria[i].getPrice();
+        if(numOfSleep != 0)
+            day.put("accommodation", getAccomodation(scheduleWeight.getAccomoMoney()));
+        else
+            day.put("accommodation", null);
+
+        if (departTime > 7) {
+            day.put("breakfast", null);
+
+            if (departTime > 11)
+                day.put("event", null);
+            if (departTime >= 12)
+                day.put("lunch", null);
+            if (departTime >= 18) {
+                day.put("dinner", null);
+                day.put("tour", null);
+            }
         }
 
-        for(int i=0; i<numOfSleep; i++) {
-            accomodation[i] = getAccomodation(scheduleWeight.getAccomoMoney());
-            balance -= accomodation[i].getPrice();
+        schedule.add(day);
+
+        for(int i=1; i<=numOfSleep; i++) {
+            String tourDay = (i+1) + "Day";
+            day = new LinkedHashMap<>();
+
+            day.put("day", tourDay);
+            day.put("breakfast", getCafeteria(scheduleWeight.getFoodMoney()));
+            day.put("event", getEvent(scheduleWeight.getTourMoney()));
+            day.put("lunch", getCafeteria(scheduleWeight.getFoodMoney()));
+            day.put("tour", getTour(scheduleWeight.getTourMoney()));
+            day.put("dinner", getCafeteria(scheduleWeight.getFoodMoney()));
+            day.put("accommodation", getAccomodation(scheduleWeight.getAccomoMoney()));
+
+            if(i == numOfSleep) {
+                day.put("dinner", null);
+                day.put("accommodation", null);
+            }
+
+            schedule.add(day);
         }
 
-        for(int i=0; i<numOfTour/2; i++) {
-            tour[i] = getTour(scheduleWeight.getTourMoney());
-            event[i] = getEvent(scheduleWeight.getTourMoney());
 
-            balance -= (tour[i].getPrice() + event[i].getPrice());
-        }
-
-        plan.put("food", cafeteria);
-        plan.put("tour", tour);
-        plan.put("event", event);
-        plan.put("sleep", accomodation);
-        plan.put("totalCost", totalMoney - balance);
-
-        return plan;
+        return schedule;
     }
 
     private Cafeteria getCafeteria(int money) {
         Cafeteria cafeteria = null;
 
-        while(true) {
+        while (true) {
             cafeteria = cafeteriaRepository.find(money);
 
-            if(cafeteria == null)
+            if (cafeteria == null)
                 money += 10000;
             else
                 break;
@@ -101,10 +127,10 @@ public class ScheduleService {
     private Accomodation getAccomodation(int money) {
         Accomodation accomodation = null;
 
-        while(true) {
+        while (true) {
             accomodation = accomodationRepository.find(money);
 
-            if(accomodation == null)
+            if (accomodation == null)
                 money += 10000;
             else
                 break;
@@ -116,10 +142,10 @@ public class ScheduleService {
     private Tour getTour(int money) {
         Tour tour = null;
 
-        while(true) {
+        while (true) {
             tour = tourRepository.find(money);
 
-            if(tour == null)
+            if (tour == null)
                 money += 10000;
             else
                 break;
@@ -131,10 +157,10 @@ public class ScheduleService {
     private Event getEvent(int money) {
         Event event = null;
 
-        while(true) {
+        while (true) {
             event = eventRepository.find(money);
 
-            if(event == null)
+            if (event == null)
                 money += 10000;
             else
                 break;

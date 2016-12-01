@@ -31,13 +31,26 @@ public class ScheduleWeight {
             accomoWeight *= 1.5;
 
         totalWeight = foodWeight + accomoWeight + tourWeight;
-        
-        totalFoodMoney = (int)(foodWeight / (double)totalWeight * money);
-        totalAccomoMoney = (int)(accomoWeight / (double)totalWeight * money);
-        totalTourMoney = (int)(tourWeight / (double)totalWeight * money);
-        
-        foodMoney = totalFoodMoney / numOfEat;
-        accomoMoney = totalAccomoMoney / numOfSleep;
-        tourMoney = totalTourMoney / numOfTour;
+
+        if(numOfSleep == 0) {
+            numOfSleep = 0;
+        } else {
+            totalAccomoMoney = (int)(accomoWeight / (double)totalWeight * money);
+            accomoMoney = totalAccomoMoney / numOfSleep;
+        }
+
+        if(numOfEat == 0) {
+            numOfEat = 0;
+        } else {
+            totalFoodMoney = (int)(foodWeight / (double)totalWeight * money);
+            foodMoney = totalFoodMoney / numOfEat;
+        }
+
+        if(numOfTour == 0) {
+            numOfTour = 0;
+        } else {
+            totalTourMoney = (int)(tourWeight / (double)totalWeight * money);
+            tourMoney = totalTourMoney / numOfTour;
+        }
     }
 }
