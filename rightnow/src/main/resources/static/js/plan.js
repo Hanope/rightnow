@@ -1,4 +1,14 @@
+// createDistance 문제 발생
+// cnt값이 반복되는 현상 발생
+// route값 생성 문제
+
+
 var totalMoney = 0;
+var position;
+var route = new Array();
+var currentTime;
+var nextAddress = 0;
+var scheduleData;
 
 $('#btn-plan-search').click(function () {
     var location = $("input[name='location']:checked").val();
@@ -18,8 +28,17 @@ $('#btn-plan-search').click(function () {
         return;
     }
 
+    var eDate = new Date(endDate);
+    var sDate = new Date(startDate);
+    var betweenDay = parseInt((eDate.getTime() - sDate.getTime()) / 1000 / 3600 / 24) + 2;
+
+    if(betweenDay >= 5) {
+        alert('현재 개발 단계로\n5일 이상의 일정 서비스를 지원하지 않습니다.');
+        return;
+    }
+
     $.ajax({
-        url: "/schedule/make",
+        url: "./schedule/make",
         type: "GET",
         data: {
             'location': location,
@@ -29,15 +48,47 @@ $('#btn-plan-search').click(function () {
             'theme': theme
         },
         success: function (json) {
+            totalMoney = 0;
+            route = [];
+            scheduleData = json;
             var t = JSON.stringify(json, null, "\t");
 
             $('#plan_result').text("");
             $('#plan_result').text(t);
 
-            makePlan(json);
+            currentTime = new Date($('#startDate').val());
+            currentTime.setHours(currentTime.getHours() - 9);
+
+            saveData(json);
+
+        }, error: function() {
+            scheduleData = null;
         }
     });
 });
+
+function saveData(day) {
+    position = [{lat: 37.500439, lng: 126.867633}];
+
+    for(var i in day) {
+        if(day[i]['breakfast'] != null)
+            position.push({lat: day[i]['breakfast']['latitude'], lng: day[i]['breakfast']['longitude']})
+        if(day[i]['event'] != null)
+            position.push({lat: day[i]['event']['latitude'], lng: day[i]['event']['longitude']})
+        if(day[i]['lunch'] != null)
+            position.push({lat: day[i]['lunch']['latitude'], lng: day[i]['lunch']['longitude']})
+        if(day[i]['tour'] != null)
+            position.push({lat: day[i]['tour']['latitude'], lng: day[i]['tour']['longitude']})
+        if(day[i]['dinner'] != null)
+            position.push({lat: day[i]['dinner']['latitude'], lng: day[i]['dinner']['longitude']})
+        if(day[i]['accommodation'] != null)
+            position.push({lat: day[i]['accommodation']['latitude'], lng: day[i]['accommodation']['longitude']})
+    }
+
+    nextAddress = 0;
+    calcRoute();
+
+}
 
 function makePlan(day) {
     $('.day_schedule').html('');
@@ -47,38 +98,34 @@ function makePlan(day) {
         return;
     }
 
+    var num = 0;
+
     for (var i in day) {
         var cnt = 1;
 
         createDay(parseInt(i) + 1);
-        createDistance();
 
         if(day[i]['breakfast'] != null) {
-            createSchedule(day[i]['breakfast'], cnt++);
-            createDistance();
+            createSchedule(day[i]['breakfast'], cnt++, createDistance(num++));
         }
         if(day[i]['event'] != null) {
-            createSchedule(day[i]['event'], cnt++);
-            createDistance();
+            createSchedule(day[i]['event'], cnt++, createDistance(num++));
         }
         if(day[i]['lunch'] != null) {
-            createSchedule(day[i]['lunch'], cnt++);
-            createDistance();
+            createSchedule(day[i]['lunch'], cnt++, createDistance(num++));
         }
         if(day[i]['tour'] != null) {
-            createSchedule(day[i]['tour'], cnt++);
-            createDistance();
+            createSchedule(day[i]['tour'], cnt++, createDistance(num++));
         }
         if(day[i]['dinner'] != null) {
-            createSchedule(day[i]['dinner'], cnt++);
-            createDistance();
+            createSchedule(day[i]['dinner'], cnt++, createDistance(num++));
         }
         if(day[i]['accommodation'] != null) {
-            createSchedule(day[i]['accommodation'], cnt++);
+            createSchedule(day[i]['accommodation'], cnt++,  createDistance(num++));
         }
     }
 
-    alert(totalMoney);
+    createTotalCost();
 }
 
 function day_schedule_container_null() {
@@ -89,7 +136,7 @@ function day_schedule_container_null() {
     $('.day_schedule').html(text).hide().fadeIn(1000);
 }
 
-function createSchedule(schedule, cnt) {
+function createSchedule(schedule, cnt, duration) {
     var name = schedule['name'];
     var imgSrc = (schedule['image'] == '') ? '/img/default.png' : schedule['image'];
     var rating = schedule['rating'];
@@ -97,6 +144,22 @@ function createSchedule(schedule, cnt) {
     var price = schedule['price'];
     var latitude = schedule['latitude'];
     var longitude = schedule['longitude'];
+    var cTime = new Date(currentTime.getTime() + duration);
+    var nTime;
+
+    switch(schedule['typecode']) {
+        case 1:
+            nTime = new Date(cTime.getTime() + 3600000);
+            break;
+        case 2:
+            var d = new Date(cTime);
+            d.setDate(d.getDate() + 1);
+            nTime = new Date(d.setHours(8, 0, 0));
+            break;
+        default:
+            nTime = new Date(cTime.getTime() + 10800000);
+    }
+
     var text = '<div class="day_schedule_container">' +
                     '<div class="day_schedule_number_container">' +
                         '<div class="day_schedule_number">' + cnt + '</div>' +
@@ -107,7 +170,7 @@ function createSchedule(schedule, cnt) {
                         '</div>' +
                         '<div class="day_schedule_content">' +
                             '<div class="day_schedule_title">' +
-                                name +
+                                '<a class="day_schedule_title_popup" data-placement="right" data-toggle="popover" data-container="body" data-placement="left" type="button" data-html="true">' + name + '</a>' +
                             '</div>' +
                         '<div class="day_schedule_rating">' +
                                 star +
@@ -119,14 +182,33 @@ function createSchedule(schedule, cnt) {
                 '</div>' +
                 '<div class="day_schedule_time_container">' +
                     '<div class="day_schedule_time">' +
-                        '<p>09:30</p>' +
-                        '<p>~ 11:35</p>' +
+                        '<p>' + cTime.format("HH:mm") + '</p>' +
+                        '<p>~' + nTime.format("HH:mm") +'</p>' +
                     '</div>' +
                 '</div>' +
             '</div>';
 
+    currentTime = nTime;
+
     totalMoney += schedule['price'];
     $('.day_schedule').append(text);
+}
+
+function createTotalCost() {
+    var text = '<div class="total_cost_container">' +
+                    '<div class="total_title">' +
+                        '<span>총 비용</span>' +
+                    '</div>' +
+                    '<div class="total_content">' +
+                        '<span>' + numberWithCommas(totalMoney) + '₩</span>' +
+                    '</div>' +
+                '</div>'
+
+    $('.day_schedule').append(text);
+}
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 function getStar(rating) {
@@ -144,8 +226,15 @@ function getStar(rating) {
 function createDay(day) {
     var tourDay = "Day" + day;
     var date = new Date($('#startDate').val());
+    date.setHours(date.getHours() - 9);
+    date.setDate(date.getDate() + (day-1));
+
+    if(day > 1)
+        date.setHours(8);
+
+
     var dateString = date.format("yyyy.MM.dd (E)");
-    var timeString = addZero(date.getUTCHours()) + ':' + addZero(date.getUTCMinutes());
+    var timeString = addZero(date.getHours()) + ':' + addZero(date.getUTCMinutes());
 
     var text = '<div class="day_info_container">' +
                     '<div class="day_text">' + tourDay + '</div>' +
@@ -157,7 +246,12 @@ function createDay(day) {
     $('.day_schedule').append(text);
 }
 
-function createDistance() {
+function createDistance(cnt) {
+    var leg = route[cnt]['routes'][0]['legs'][0];
+    var distance = leg['distance']['text'];
+    var duration_text =  leg['duration']['text'];
+    var duration_value = leg['duration']['value'];
+
     var text = '<div class="day_distance_container">' +
                     '<div class="day_distance_bar">' +
                         '<ul class="day_bar">' +
@@ -167,11 +261,13 @@ function createDistance() {
                         '</ul>' +
                     '</div>' +
                     '<div class="day_distance_text">' +
-                        '-> 10분 이동' +
+                        '-> ' + duration_text + ' 이동 (' + distance + ')' +
                     '</div>' +
                 '</div>';
 
     $('.day_schedule').append(text);
+
+    return duration_value * 1000;
 }
 
 function addZero(i) {
@@ -181,11 +277,66 @@ function addZero(i) {
     return i;
 }
 
-$(document).on('click', '.day_schedule_title', function() {
-    var index = $(this).index('.day_schedule_title') + 1;
+$(document).on('click', '.day_schedule_title_popup', function() {
+    var index = $(this).index('.day_schedule_title_popup');
 
-    console.log(calcTime(position[index-1], position[index]));
+    $(this).popover({
+        html: true,
+        content: function() {
+            var text = showSchedule(route[index]);
+            return text;
+        }
+    });
 });
+
+function showSchedule(leg) {
+    var text = '<pre>';
+    var origin = leg['request']['origin'];
+    var destination = leg['request']['destination'];
+
+    try {
+        var step = leg['routes'][0]['legs'][0]['steps'];
+
+        for(i in step) {
+            var travelMode = step[i]['travel_mode'];
+            var distance = step[i]['distance']['text'];
+            var duration = step[i]['duration']['text'];
+            var instructions = step[i]['instructions'];
+
+            var cnt = parseInt(i) + 1;
+
+
+            text += '-----------' + cnt + '-----------\n' +
+                '이동안내 : ' + instructions + '\n' +
+                '이동거리 : ' + distance + '\n' +
+                '이동시간 : ' + duration + '\n';
+
+            if(travelMode != 'WALKING') {
+                var departureLocation = step[i]['transit']['departure_stop']['name'];
+                var departureTime = step[i]['transit']['departure_time']['text'];
+                var arrivalLocation = step[i]['transit']['arrival_stop']['name'];
+                var arrivalTime = step[i]['transit']['arrival_time']['text'];
+                var lineNumber = step[i]['transit']['line']['short_name'];
+                var vehichle = step[i]['transit']['line']['vehicle']['name'];
+                var headsign = step[i]['transit']['headsign'];
+
+
+                text += '교통수단 : ' + vehichle + ' ' + lineNumber + '\n' +
+                    '이동방향 : ' + headsign + '\n' +
+                    '승차장소 : ' + departureLocation + '\n' +
+                    '출발시간 : ' + departureTime + '\n' +
+                    '하차장소 : ' + arrivalLocation + '\n' +
+                    '도착시간 : ' + arrivalTime + '\n';
+            }
+
+        }
+    } catch(e) {
+    }
+
+    displayRoute(origin, destination);
+
+    return text + '</pre>';
+}
 
 Date.prototype.format = function(f) {
     if (!this.valueOf()) return " ";

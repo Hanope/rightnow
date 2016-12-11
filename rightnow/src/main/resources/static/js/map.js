@@ -1,19 +1,17 @@
-var directionsService = new google.maps.DirectionsService;
+var directionsService = new google.maps.DirectionsService();
 var directionsDisplay = new google.maps.DirectionsRenderer;
-var routeList = new Array();
-
 var map;
 var currentPos;
 
-$('#btn-make-plan').click(function() {
-    var startLocation = $('#start').val();
-    var endLocation = $('#end').val();
-    var start = getLatLng(startLocation);
-    var end = getLatLng(endLocation);
-
-    directionsDisplay.setMap(map);
-    calculateAndDisplayRoute(directionsService, directionsDisplay, start, end);
-});
+// $('#btn-make-plan').click(function() {
+//     var startLocation = $('#start').val();
+//     var endLocation = $('#end').val();
+//     var start = getLatLng(startLocation);
+//     var end = getLatLng(endLocation);
+//
+//     directionsDisplay.setMap(map);
+//     calculateAndDisplayRoute(directionsService, directionsDisplay, start, end);
+// });
 
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
@@ -38,7 +36,9 @@ function initMap() {
     }
 }
 
-function calculateAndDisplayRoute(directionsService, directionsDisplay, start, end) {
+function displayRoute(start, end) {
+    directionsDisplay.setMap(map);
+
     directionsService.route({
         origin: start,
         destination: end,
@@ -51,16 +51,6 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay, start, e
     }, function(response, status) {
         if (status === google.maps.DirectionsStatus.OK) {
             directionsDisplay.setDirections(response);
-            routeList.push(response);
-
-            showSchedule(response);
-
-
-            return response;
-
-
-        } else {
-            window.alert('Directions request failed due to ' + status);
         }
     });
 }
@@ -143,5 +133,39 @@ function showSchedule(json) {
     $('#plan_result').html(text);
 }
 
+function getAddress(from, to, next) {
+    var request = {
+        origin: from,
+        destination: to,
+        travelMode: google.maps.TravelMode.TRANSIT
+    };
+
+    directionsService.route(request, function(result, status) {
+        if(status == google.maps.DirectionsStatus.OK) {
+            route[nextAddress++] = result;
+        } else {
+            return;
+        }
+        next();
+    });
+}
+
+function calcRoute() {
+    $('.loading-container').fadeIn("slow");
+
+    if(nextAddress < (position.length)-1) {
+        getAddress(position[nextAddress], position[nextAddress+1], calcRoute);
+        sleep(600);
+
+    } else {
+        makePlan(scheduleData);
+        $('.loading-container').fadeOut("slow");
+    }
+}
+
+function sleep(ms){
+    ts1 = new Date().getTime() + ms;
+    do ts2 = new Date().getTime(); while (ts2<ts1);
+}
 
 initMap();

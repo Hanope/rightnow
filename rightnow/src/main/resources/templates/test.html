@@ -9,8 +9,13 @@
     <button id='btn_plan'></button>
 </body>
     <script>
-        $('#btn_plan').click(function() {
-            alert('hello');
+        $.ajax({
+        	url: 'https://maps.googleapis.com/maps/api/directions/json?origin=37.5499,127.081&destination=37.5774,126.816&key=AIzaSyC19ZjyDOsyPWdRbHX_3pVYewO09LaoT64&mode=transit&departure_time=1480573865',
+        	type: 'GET',
+        	dataType:'json',
+        	success: function(json) {
+        		console.log(json);
+        	}
         });
     </script>
 </html>

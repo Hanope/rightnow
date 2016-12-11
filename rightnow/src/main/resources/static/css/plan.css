@@ -1,3 +1,7 @@
+plan_container {
+    margin-top: 100px;
+}
+
 .day_schedule {
     height: 500px;
     overflow: scroll;
@@ -9,6 +13,9 @@
     height: 60px;
     border-top: 1px solid #E5E5E5;
     border-right: 1px solid #E5E5E5;
+}
+
+.day_info_container:nth-child(n+2) {
     margin-top: 50px;
 }
 
@@ -153,4 +160,50 @@
     margin-top: 40px;
     font-weight: bold;
     text-align: center;
+}
+
+.total_cost_container {
+    margin-top: 30px;
+    background: #FFFFFF;
+    width: 100%;
+    height: 50px;
+    border: 1px solid #E5E5E5;
+}
+
+.total_title {
+    width: 20%;
+    height: 100%;
+    float:left;
+    background: #203341;
+    text-align: center;
+}
+
+.total_title > span {
+    position: relative;
+    top: 20%;
+    color: #FFFFFF;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.total_content {
+    width: 80%;
+    height: 100%;
+    float: left;
+    text-align: right;
+}
+
+.total_content > span {
+    position: relative;
+    font-size: 20px;
+    font-weight: bold;
+    top: 20%;
+    margin-right: 5%;
+}
+
+.btn-container {
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }

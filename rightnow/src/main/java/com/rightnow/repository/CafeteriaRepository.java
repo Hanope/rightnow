@@ -10,6 +10,6 @@ import org.springframework.data.repository.query.Param;
  */
 public interface CafeteriaRepository extends JpaRepository<Cafeteria, Integer> {
 
-    @Query(value = "SELECT * FROM cafeteria c WHERE c.price BETWEEN (:price*0.5) AND :price ORDER BY c.rating DESC, RAND() LIMIT 1", nativeQuery = true)
+    @Query(value = "SELECT * FROM cafeteria c WHERE c.price <= :price ORDER BY c.price DESC, RAND() LIMIT 1", nativeQuery = true)
     public Cafeteria find(@Param("price") int price);
 }

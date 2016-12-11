@@ -23,6 +23,9 @@ public class Accomodation {
     private int areacode;
 
     @Column
+    private int typecode;
+
+    @Column
     private String image;
 
     @Column

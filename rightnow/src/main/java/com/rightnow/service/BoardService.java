@@ -83,7 +83,7 @@ public class BoardService {
             int pos = originFilename.lastIndexOf(".");
             String ext = originFilename.substring(pos);
             filename = UUID.randomUUID().toString() + ext;
-            String directory = System.getProperty("user.dir") + "/src/main/resources/static/img";
+            String directory = this.getClass().getResource("/static/img").getPath();
             String filepath = Paths.get(directory, filename).toString();
 
             BufferedOutputStream stream =

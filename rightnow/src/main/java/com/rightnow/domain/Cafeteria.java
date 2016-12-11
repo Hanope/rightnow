@@ -23,6 +23,9 @@ public class Cafeteria {
     private int areacode;
 
     @Column
+    private int typecode;
+
+    @Column
     private String image;
 
     @Column

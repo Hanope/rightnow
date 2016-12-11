@@ -7,677 +7,630 @@
 
     <title>Right Now</title>
 
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
-	<link href="/css/bootstrap-responsive.min.css" rel="stylesheet">
-    <link href="/css/heroic-features.css" rel="stylesheet">
-    <link href="/css/4-col-portfolio.css" rel="stylesheet">
-	<link href="/css/modal.css" rel="stylesheet">
-	<link href="/css/plan.css" rel="stylesheet">
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <link href="./css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="./css/heroic-features.css" rel="stylesheet">
+    <link href="./css/4-col-portfolio.css" rel="stylesheet">
+    <link href="./css/modal.css" rel="stylesheet">
+    <link href="./css/plan.css" rel="stylesheet">
+    <link href="./css/loading.css" rel="stylesheet">
 
-	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <style type="text/css">
-			body {
-				background: #F8F8FA;
-				padding-top: 50px;
-				padding-bottom: 20px;
-			}
+        body {
+            background: #F8F8FA;
+            padding-top: 50px;
+            padding-bottom: 20px;
+        }
 
-			textarea {
-				resize: none;
-			}
+        textarea {
+            resize: none;
+        }
 
-			.carousel {
-				height: 500px;
-				margin-bottom: 60px;
-			}
+        .carousel {
+            height: 500px;
+            margin-bottom: 60px;
+        }
 
-			.carousel-inner > .item > img {
-				min-width: 100%;
-				height: 500px;
-			}
+        .carousel-inner > .item > img {
+            min-width: 100%;
+            height: 500px;
+        }
 
-			.carousel-inner .carousel-caption {
-				padding-left: 30px;
-				padding-right: 30px;
-			}
+        .carousel-inner .carousel-caption {
+            padding-left: 30px;
+            padding-right: 30px;
+        }
 
-			/** 캐러셀의 반응형 기능 */
-			@media (min-width: 768px) {
-				.carousel-caption p {
-					margin-bottom: 20px;
-					font-size: 21px;
-					line-height: 1.4;
-				}
-			}
+        /** 캐러셀의 반응형 기능 */
+        @media (min-width: 768px) {
+            .carousel-caption p {
+                margin-bottom: 20px;
+                font-size: 21px;
+                line-height: 1.4;
+            }
+        }
 
-			#map {
-				position: relative;
-				width: 100%;
-				height: 300px;
-			}
-	</style>
+        #map {
+            position: relative;
+            width: 100%;
+            height: 500px;
+        }
+
+        .popover {
+            max-width: 450px;
+        }
+
+        .img-container {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+        }
+
+        .about-container > h2, p{
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
-    <div class="container">
+
+<div class="loading-container" hidden>
+    <div class="loading"></div>
+    <div id="loading-text">loading</div>
+</div>
+
+<div class="container">
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-exl-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">Right Now</a>
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-exl-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Right Now</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a class="page-scroll" href="#page-top">Home</a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="#about">About</a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="#service">Planner</a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="#review">Review</a>
+                </li>
+                <li id="btn_review_write">
+                    <a class="page-scroll" href="#reviewWriteModal" class="portfolio-link" data-toggle="modal">Write</a>
+                </li>
+            </ul>
+            <div class="navbar-form navbar-right" id="unlogin">
+                <button class="btn btn-success" data-toggle="modal" data-target="#login-modal">로그인</button>
+                <button class="btn btn-warning" data-toggle="modal" data-target="#sign-in-modal">회원가입</button>
             </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a class="page-scroll" href="#page-top">Home</a>
-                    </li>
-                    <li>
-                        <a class="page-scroll" href="#about">About</a>
-                    </li>
-                    <li>
-                        <a class="page-scroll" href="#service">Planner</a>
-                    </li>
-                    <li>
-                        <a class="page-scroll" href="#review">Review</a>
-                    </li>
-					<li id="btn_review_write">
-						<a class="page-scroll" href="#reviewWriteModal" class="portfolio-link" data-toggle="modal">Write</a>
-					</li>
-                </ul>
-				<div class="navbar-form navbar-right" id="unlogin">
-					<button class="btn btn-success" data-toggle="modal" data-target="#login-modal">로그인</button>
-					<button class="btn btn-warning" data-toggle="modal" data-target="#sign-in-modal">회원가입</button>
-				</div>
-				<div class="navbar-form navbar-right" id="logined" hidden="true">
-					<span style="color: white" id="memberName">님 환영합니다.</span>
-					<a href="./logout"><button class="btn btn-warning">로그아웃</button></a>
-				</div>
-			</div>
-            <!-- /.navbar-collapse -->
+            <div class="navbar-form navbar-right" id="logined" hidden="true">
+                <span style="color: white" id="memberName">님 환영합니다.</span>
+                <a href="./logout">
+                    <button class="btn btn-warning">로그아웃</button>
+                </a>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
 
         <!-- /.container -->
     </nav>
 
     <!-- Page Content -->
     <!-- 캐러셀 영역 구성 -->
-		<div id="carousel-generic" class="carousel slide" data-ride="carousel">
-			<!-- 현재 위치 표시 -->
-			<ol class="carousel-indicators">
-				<li data-target="#carousel-generic" data-slide-to="0" class="active"></li>
-				<li data-target="#carousel-generic" data-slide-to="1"></li>
-				<li data-target="#carousel-generic" data-slide-to="2"></li>
-			</ol>
+    <div id="carousel-generic" class="carousel slide" data-ride="carousel">
+        <!-- 현재 위치 표시 -->
+        <ol class="carousel-indicators">
+            <li data-target="#carousel-generic" data-slide-to="0" class="active"></li>
+            <li data-target="#carousel-generic" data-slide-to="1"></li>
+            <li data-target="#carousel-generic" data-slide-to="2"></li>
+        </ol>
 
-			<!-- 내용 영역 -->
-			<div class="carousel-inner">
-				<!-- 항목 (1) -->
-				<div class="item active">
-					<img src="/img/hotel1.png" alt="슬라이더(1)">
-						<div class="carousel-caption">
-							<p>지금당장 Right now를 통해서</p>
-						</div>
-				</div>
-
-				<!-- 항목 (2) -->
-				<div class="item">
-					<img src="/img/hotel2.png" alt="슬라이더(2)">
-						<div class="carousel-caption">
-							<p>여행계획을 세우세요!</p>
-						</div>
-				</div>
-
-				<!-- 항목 (3) -->
-				<div class="item">
-					<img src="/img/tour.png" alt="슬라이더(3)">
-						<div class="carousel-caption">
-							<p>이 서비스가 모두 무료입니다!</p>
-						</div>
-				</div>
-			</div>
-			<!-- // 내용영역 -->
-
-			<!-- 이동 버튼 -->
-			<a class="left carousel-control" href="#carousel-generic" data-slide="prev"> <span class="icon-prev"></span> </a>
-			<a class="right carousel-control" href="#carousel-generic" data-slide="next"> <span class="icon-next"></span> </a>
-		</div>
-		<!-- 캐러셀 영역 끝 -->
-
-		<!-- 기능소개 영역 -->
-		<section id="about">
-	        <div class="row">
-	            <div class="col-lg-12">
-	                <h1 class="page-header"><center>About</center></h1>
-	            </div>
-	        </div>
-
-	        <div class="row">
-	            <div class="col-sm-4">
-	                <center><img class="img-circle img-responsive img-center" src="http://placehold.it/300x300" alt=""></center>
-	                <h2><center>빅데이터</center></h2>
-	                <center><p>저희 Right Now는 빅데이터 기반으로 사용자에게 최적화된 서비스를 제공합니다.</p></center>
-	            </div>
-	            <div class="col-sm-4">
-	                <center><img class="img-circle img-responsive img-center" src="http://placehold.it/300x300" alt=""></center>
-	                <h2><center>여행계획</center></h2>
-	                <center><p>일정한 금액과 비용입력만으로 여행일정을 세워 드립니다.</p></center>
-	            </div>
-	            <div class="col-sm-4">
-	                <center><img class="img-circle img-responsive img-center" src="http://placehold.it/300x300" alt=""></center>
-	                <h2><center>무료</center></h2>
-	                <center><p>이 여행계획 서비스는 전부 무료입니다!</p></center>
-	            </div>
-	        </div>
-		</section>
-
-		<!-- 기능소개 영역 끝 -->
-
-        <!-- function Title -->
-        <section id="service">
-	        <div class="row">
-	            <div class="col-lg-12">
-	                <h1 class="page-header"><center>Planner</center></h1>
-	            </div>
-				<form class="form-inline" method="get">
-					<div class="row">
-						<div class="col-md-12">
-							<div class="span2"><label>장소</label></div>
-							<div class="btn-group" data-toggle="buttons">
-								<label class="btn btn-default active span2">
-									<input type="radio" name="location" id="schedule-seoul" autocomplete="off" value="seoul" checked> 서울
-								</label>
-								<label class="btn btn-default span2 disabled">
-									대전
-								</label>
-								<label class="btn btn-default span2 disabled">
-									대구
-								</label>
-								<label class="btn btn-default span2 disabled">
-									부산
-								</label>
-								<label class="btn btn-default span2 disabled">
-									제주
-								</label>
-							</div>
-						</div>
-					</div>
-					<br>
-					<br>
-
-					<div class="row">
-						<div class="col-md-12">
-							<div class="span2"><label>테마</label></div>
-							<div class="btn-group" data-toggle="buttons">
-								<label class="btn btn-default active span2">
-									<input type="radio" name="theme" id="theme-eat" value="eat" checked> 먹는게 짱이지
-								</label>
-								<label class="btn btn-default span2">
-									<input type="radio" name="theme" id="theme-sleep" value="sleep"> 잠은 편안히
-								</label>
-							</div>
-						</div>
-					</div>
-
-					<br>
-					<br>
-
-					<div class="row">
-						<div class="col-md-12">
-							<div class="col-md-4">
-								<div class="form-group">
-									<label for="startDate">출발날자 </label>
-									<input type="datetime-local" class="form-control" id="startDate">
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="form-group">
-									<label for="endDate">도착날자 </label>
-									<input type="date" class="form-control" id="endDate">
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="form-group">
-									<label for="money">여행비용 </label>
-									<input type="number" class="form-control" id="money">
-								</div>
-							</div>
-						</div>
-					</div>
-					<br>
-					<br>
-					<div class="col-md-4 col-md-offset-4">
-						<button type="button" class="btn btn-primary" id="btn-plan-search">검색</button>
-					</div>
-
-					<div class="row">
-						<div class="col-md-7 day_schedule">
-
-
-							<!--<div class="day_info_container">-->
-								<!--<div class="day_text">Day1</div>-->
-								<!--<div class="day_info">-->
-									<!--<span class="day_info_date">2016.11.30 (수) 08:00 출발</span>-->
-								<!--</div>-->
-							<!--</div>-->
-
-							<!--<div class="day_schedule_container">-->
-								<!--<div class="day_schedule_number_container">-->
-									<!--<div class="day_schedule_number">1</div>-->
-								<!--</div>-->
-
-								<!--<div class="day_schedule_content_container">-->
-									<!--<div class="day_schedule_image">-->
-										<!--<img src="/img/default.png">-->
-									<!--</div>-->
-									<!--<div class="day_schedule_content">-->
-										<!--<div class="day_schedule_title">-->
-											<!--동양미래대학교-->
-										<!--</div>-->
-										<!--<div class="day_schedule_rating">-->
-											<!--★★★★☆-->
-										<!--</div>-->
-										<!--<div class="day_schedule_price">-->
-											<!--5,000원-->
-										<!--</div>-->
-									<!--</div>-->
-								<!--</div>-->
-
-								<!--<div class="day_schedule_time_container">-->
-									<!--<div class="day_schedule_time">-->
-										<!--<p>09:30</p>-->
-										<!--<p>~ 11:35</p>-->
-									<!--</div>-->
-								<!--</div>-->
-							<!--</div>-->
-
-							<!--<div class="day_distance_container">-->
-								<!--<div class="day_distance_bar">-->
-									<!--<ul class="day_bar">-->
-										<!--<li></li>-->
-										<!--<li></li>-->
-										<!--<li></li>-->
-									<!--</ul>-->
-								<!--</div>-->
-								<!--<div class="day_distance_text">-->
-									<!-- -> 10분 이동 (14시 20분 도착)-->
-								<!--</div>-->
-							<!--</div>-->
-
-
-							<!--<div class="day_schedule_container">-->
-								<!--<div class="day_schedule_no">조건에 맞는 일정이 없습니다.</div>-->
-							<!--</div>-->
-
-						</div>
-						<div class="col-md-5">
-							<div id="map"></div>
-						</div>
-					</div>
-
-					<div class="col-md-4 col-md-offset-4">
-						<br><br>
-					</div>
-				</form>
-	            <div class="row">
-					<div class="col-md-3">
-						<div class="form-group">
-							<label for="start">출발지</label>
-							<select class="form-control input-small" id="start">
-								<option value="current">현재 위치</option>
-								<option value="dongyang">동양미래대학교</option>
-								<option value="gocheckdom">고척돔</option>
-								<option value="namsanTower">남산타워</option>
-								<option value="gwanghwamun">광화문</option>
-							</select>
-
-							<label for="end">도착지</label>
-							<select class="form-control" id="end">
-								<option value="current">현재 위치</option>
-								<option value="dongyang">동양미래대학교</option>
-								<option value="gocheckdom">고척돔</option>
-								<option value="namsanTower">남산타워</option>
-								<option value="gwanghwamun">광화문</option>
-							</select>
-
-							<button type="button" class="btn btn-primary" id="btn-make-plan">조회</button>
-						</div>
-					</div>
-
-					<div class="col-md-4">
-						<h5>Data</h5>
-						<pre id="plan_result"></pre>
-					</div>
-
-	            </div>
-	        </div>
-        </section>
-        <!-- /.row -->
-
-        <!-- Page Heading -->
-        <section id="review">
-	        <div class="row">
-	            <div class="col-lg-12">
-	                <h1 class="page-header"><center>Review</center></h1>
-	            </div>
-	        </div>
-	        <!-- /.row -->
-
-			<!-- review-row -->
-	        <div class="review-row">
-
-	        </div>
-	        <!-- /.review-row -->
-
-	        <!-- Pagination -->
-        </section>
-        <!-- /.row -->
-        <hr>
-        <!-- Footer -->
-        <footer>
-            <div class="row">
-                <div class="col-lg-12">
-                    <center><p>Copyright &copy; Right Now Website 2016</p></center>
+        <!-- 내용 영역 -->
+        <div class="carousel-inner">
+            <!-- 항목 (1) -->
+            <div class="item active">
+                <img src="./img/hotel1.png" alt="슬라이더(1)">
+                <div class="carousel-caption">
+                    <p>지금당장 Right now를 통해서</p>
                 </div>
             </div>
-        </footer>
+
+            <!-- 항목 (2) -->
+            <div class="item">
+                <img src="./img/hotel2.png" alt="슬라이더(2)">
+                <div class="carousel-caption">
+                    <p>여행계획을 세우세요!</p>
+                </div>
+            </div>
+
+            <!-- 항목 (3) -->
+            <div class="item">
+                <img src="./img/tour.png" alt="슬라이더(3)">
+                <div class="carousel-caption">
+                    <p>이 서비스가 모두 무료입니다!</p>
+                </div>
+            </div>
+        </div>
+        <!-- // 내용영역 -->
+
+        <!-- 이동 버튼 -->
+        <a class="left carousel-control" href="#carousel-generic" data-slide="prev"> <span class="icon-prev"></span>
+        </a>
+        <a class="right carousel-control" href="#carousel-generic" data-slide="next"> <span class="icon-next"></span>
+        </a>
+    </div>
+    <!-- 캐러셀 영역 끝 -->
+
+    <!-- 기능소개 영역 -->
+    <section id="about">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    <center>About</center>
+                </h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4 about-container">
+                <div class="img-container">
+                    <img class="img-circle img-responsive img-center" src="./img/big-data.png">
+                </div>
+                <h2>빅데이터</h2>
+                <p>빅데이터 기반으로 사용자에게 최적화된 서비스를 제공합니다.</p>
+            </div>
+
+            <div class="col-sm-4 about-container">
+                <div class="img-container">
+                    <img class="img-circle img-responsive img-center" src="./img/plan.png">
+                </div>
+                <h2>여행계획</h2>
+                <p>간단한 입력만으로 여행 일정을 만들어 드립니다.</p>
+            </div>
+
+            <div class="col-sm-4 about-container">
+                <div class="img-container">
+                    <img class="img-circle img-responsive img-center" src="./img/free.png">
+                </div>
+                <h2>무료</h2>
+                <p>모든 서비스는 무료입니다.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 기능소개 영역 끝 -->
+
+    <!-- function Title -->
+    <section id="service">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    <center>Planner</center>
+                </h1>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="span2"><label>장소</label></div>
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-default active span2">
+                            <input type="radio" name="location" id="schedule-seoul" autocomplete="off" value="seoul" checked> 서울</label>
+                        <label class="btn btn-default span2 disabled">대전</label>
+                        <label class="btn btn-default span2 disabled">대구</label>
+                        <label class="btn btn-default span2 disabled">부산</label>
+                        <label class="btn btn-default span2 disabled">제주</label>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <br>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="span2"><label>테마</label></div>
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-default active span2">
+                            <input type="radio" name="theme" id="theme-eat" value="eat" checked> 먹는게 짱이지
+                        </label>
+                        <label class="btn btn-default span2">
+                            <input type="radio" name="theme" id="theme-sleep" value="sleep"> 잠은 편안히
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+            <br>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="startDate">출발날자 </label>
+                            <input type="datetime-local" class="form-control" id="startDate">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="endDate">도착날자 </label>
+                            <input type="date" class="form-control" id="endDate">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="money">여행비용 </label>
+                            <input type="number" class="form-control" id="money">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="btn-container">
+                <button type="button" class="btn btn-primary" id="btn-plan-search">검색</button>
+            </div>
+
+            <div class="plan_container row">
+                <div class="col-md-7 day_schedule">
+
+                </div>
+                <div class="col-md-5">
+                    <div id="map"></div>
+                </div>
+            </div>
+
+            <div class="col-md-4 col-md-offset-4">
+                <br><br>
+            </div>
+        </div>
+    </section>
+    <!-- /.row -->
+
+    <!-- Page Heading -->
+    <section id="review">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    <center>Review</center>
+                </h1>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <!-- review-row -->
+        <div class="review-row">
+
+        </div>
+        <!-- /.review-row -->
+
+        <!-- Pagination -->
+    </section>
+    <!-- /.row -->
+    <hr>
+    <!-- Footer -->
+    <footer>
+        <div class="row">
+            <div class="col-lg-12">
+                <center><p>Copyright &copy; Right Now Website 2016</p></center>
+            </div>
+        </div>
+    </footer>
     <!-- /.container -->
 
-	</div>
+</div>
 
-	<div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-		<div class="modal-dialog">
-			<div class="loginmodal-container">
-				<h1>로그인</h1><br>
-				<input type="text" id="login-id" name="username" placeholder="아이디">
-				<input type="password" id="login-pw" name="password" placeholder="비밀번호">
-				<button type="button" id="login-btn" name="login" class="login loginmodal-submit">로그인</button>
-			</div>
-		</div>
-	</div>
+<div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+     style="display: none;">
+    <div class="modal-dialog">
+        <div class="loginmodal-container">
+            <h1>로그인</h1><br>
+            <input type="text" id="login-id" name="username" placeholder="아이디">
+            <input type="password" id="login-pw" name="password" placeholder="비밀번호">
+            <button type="button" id="login-btn" name="login" class="login loginmodal-submit">로그인</button>
+        </div>
+    </div>
+</div>
 
 
-	<!--/Login Modal-->
+<!--/Login Modal-->
 
-	<!--Sign in Modal-->
-	<div class="modal fade" id="sign-in-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-		<div class="modal-dialog">
-			<div class="loginmodal-container">
-				<h1>회원가입</h1><br>
-				<input type="text" id="sign-id" class="form-control has-error" name="id" placeholder="아이디" required>
-				<label class="sign-msg"></label>
-				<input type="password" id="sign-pw" class="form-control" name="password" placeholder="비밀번호" required>
-				<input type="text" id="sign-name" class="form-control" name="name" placeholder="이름" required>
-				<input type="text" id="sign-tel" class="form-control" name="tel" placeholder="핸드폰 번호" required>
-				<button type="button" id="sign-btn" class="sign loginmodal-submit">회원가입</button>
-			</div>
-		</div>
-	</div>
-	<!--/Sign in Modal-->
+<!--Sign in Modal-->
+<div class="modal fade" id="sign-in-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+     style="display: none;">
+    <div class="modal-dialog">
+        <div class="loginmodal-container">
+            <h1>회원가입</h1><br>
+            <input type="text" id="sign-id" class="form-control has-error" name="id" placeholder="아이디" required>
+            <label class="sign-msg"></label>
+            <input type="password" id="sign-pw" class="form-control" name="password" placeholder="비밀번호" required>
+            <input type="text" id="sign-name" class="form-control" name="name" placeholder="이름" required>
+            <input type="text" id="sign-tel" class="form-control" name="tel" placeholder="핸드폰 번호" required>
+            <button type="button" id="sign-btn" class="sign loginmodal-submit">회원가입</button>
+        </div>
+    </div>
+</div>
+<!--/Sign in Modal-->
 
-	<!-- Review Modal -->
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-		<div class="vertical-alignment-helper">
-			<div class="modal-dialog vertical-align-center">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+<!-- Review Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span
+                            aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 
-						</button>
-						<h4 class="modal-title" id="board_title"></h4>
+                    </button>
+                    <h4 class="modal-title" id="board_title"></h4>
 
-					</div>
-					<div class="modal-body"><img id="board_img"></div>
-					<div class="modal-body"><span id="board_content"></span></div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!--/Review Modal-->
+                </div>
+                <div class="modal-body"><img id="board_img"></div>
+                <div class="modal-body"><span id="board_content"></span></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/Review Modal-->
 
-	<!-- Review Write Modal -->
-	<div class="modal fade" id="reviewWriteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-		<div class="vertical-alignment-helper">
-			<div class="modal-dialog vertical-align-center">
-				<div class="modal-content">
-					<form method="post" enctype="multipart/form-data" id="frmReview">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+<!-- Review Write Modal -->
+<div class="modal fade" id="reviewWriteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content">
+                <form method="post" enctype="multipart/form-data" id="frmReview">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                                class="sr-only">Close</span>
 
-							</button>
-							<div class="form-group">
-								<label for="write_title">제목</label>
-								<input id="write_title" name="title" class="form-control"/>
-							</div>
+                        </button>
+                        <div class="form-group">
+                            <label for="write_title">제목</label>
+                            <input id="write_title" name="title" class="form-control"/>
+                        </div>
 
-						</div>
-						<div class="modal-body">
-							<div class="form-group">
-								<label for="write_content">내용</label>
-								<textarea id="write_content" name="content" cols="30" rows="10" class="form-control"></textarea>
-								<label for="upload_img"></label>
-								<input id="upload_img" name="uploadfile" type="file" accept="image/*" />
-							</div>
-						</div>
-						<div class="modal-footer">
-							<input type="submit" class="btn btn-primary" id="review_write" value="글쓰기"/>
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!--/Review Write Modal-->
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="write_content">내용</label>
+                            <textarea id="write_content" name="content" cols="30" rows="10"
+                                      class="form-control"></textarea>
+                            <label for="upload_img"></label>
+                            <input id="upload_img" name="uploadfile" type="file" accept="image/*"/>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-primary" id="review_write" value="글쓰기"/>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/Review Write Modal-->
 
 </body>
 <!-- jQuery -->
-<script src="/js/jquery.js"></script>
+<script src="./js/jquery.js"></script>
 <!-- Bootstrap Core JavaScript -->
-<script src="/js/bootstrap.min.js"></script>
+<script src="./js/bootstrap.min.js"></script>
 <!-- Scrolling Nav JavaScript -->
-<script src="/js/jquery.easing.min.js"></script>
-<script src="/js/scrolling-nav.js"></script>
+<script src="./js/jquery.easing.min.js"></script>
+<script src="./js/scrolling-nav.js"></script>
 
 <script>
-	$('#sign-btn').click(function() {
-		var obj;
+    $('#sign-btn').click(function () {
+        var obj;
 
-		$.ajax({
-			type: "POST",
-			url: "/member/join",
-			data: {	"id" : $('#sign-id').val(),
-				"password" : $('#sign-pw').val(),
-				"name" : $('#sign-name').val(),
-				"tel" : $('#sign-tel').val() },
-			success: function(json) {
-				obj = json;
-				var message = json['message'];
+        $.ajax({
+            type: "POST",
+            url: "./member/join",
+            data: {
+                "id": $('#sign-id').val(),
+                "password": $('#sign-pw').val(),
+                "name": $('#sign-name').val(),
+                "tel": $('#sign-tel').val()
+            },
+            success: function (json) {
+                obj = json;
+                var message = json['message'];
 
-				alert(message);
-				$('#login-modal').modal('toggle');
-			}
-		});
-	});
+                alert(message);
+                $('#sign-in-modal').modal('toggle');
+            }
+        });
+    });
 
-	$('#sign-id').keyup(function() {
-		$.ajax({
-			type: "GET",
-			url: "/member/idCheck",
-			data: {"memberId" : $('#sign-id').val()},
-			success: function(json) {
-				var result = json['result'];
-				var message = json['message'];
+    $('#sign-id').keyup(function () {
+        $.ajax({
+            type: "GET",
+            url: "./member/idCheck",
+            data: {"memberId": $('#sign-id').val()},
+            success: function (json) {
+                var result = json['result'];
+                var message = json['message'];
 
-				if(result == 'success')
-					$('.sign-msg').text('사용 가능한 아이디입니다');
-				else
-					$('.sign-msg').text('이미 존재하는 아이디입니다.');
-			}
-		});
-	});
+                if (result == 'success')
+                    $('.sign-msg').text('사용 가능한 아이디입니다');
+                else
+                    $('.sign-msg').text('이미 존재하는 아이디입니다.');
+            }
+        });
+    });
 
-	$('#login-btn').click(function() {
-		var obj;
+    $('#login-btn').click(function () {
+        var obj;
 
-		$.ajax({
-			type: "POST",
-			url: "/loginProcessing",
-			data: {	"username" : $('#login-id').val(),
-					"password" : $('#login-pw').val()},
-			success: function() {
-				alert('로그인 성공');
-				checkSession();
-				$('#login-modal').modal('toggle');
-			}, error: function() {
-				alert('로그인 정보가 올바르지 않습니다.');
-			}
-		});
-	});
+        $.ajax({
+            type: "POST",
+            url: "./loginProcessing",
+            data: {
+                "username": $('#login-id').val(),
+                "password": $('#login-pw').val()
+            },
+            success: function () {
+                alert('로그인 성공');
+                checkSession();
+                $('#login-modal').modal('toggle');
+            }, error: function () {
+                alert('로그인 정보가 올바르지 않습니다.');
+            }
+        });
+    });
 
-	function callAjax(page) {
-		$.ajax({
-			url: '/board?page=' + page,
-			type: 'GET',
-			dataType: 'json',
-			success: function(object) {
-				var size = object.length;
+    function callAjax(page) {
+        $.ajax({
+            url: './board?page=' + page,
+            type: 'GET',
+            dataType: 'json',
+            success: function (object) {
+                var size = object.length;
 
-				for(var i=0; i<size; i++) {
-					var title = object[i]['title'];
-					var content = object[i]['content'];
-					var imgSrc;
-					var idx = object[i]['idx'];
+                for (var i = 0; i < size; i++) {
+                    var title = object[i]['title'];
+                    var content = object[i]['content'];
+                    var imgSrc;
+                    var idx = object[i]['idx'];
 
-					try {
-						imgSrc = object[i]['imageFileList'][0]['src'];
-					} catch(e) {
-						imgSrc = "./img/default.png";
-					}
+                    try {
+                        imgSrc = object[i]['imageFileList'][0]['src'];
+                    } catch (e) {
+                        imgSrc = "./img/default.png";
+                    }
 
-					createRow(title, idx, imgSrc);
-				}
-			}
-		});
-	}
+                    createRow(title, idx, imgSrc);
+                }
+            }
+        });
+    }
 
-	function createRow(title, idx, imgSrc) {
-		var parent = '.review-row';
-		var text = '<a href="#myModal" class="portfolio-link" data-toggle="modal">' +
-						'<div class="board-container" id="board_' + idx + '">' +
-							'<img src="' + imgSrc + '">' +
-							'<span>' + title + '</span>' +
-						'</div>' +
-					'</a>';
-		$(parent).append(text);
-	}
+    function createRow(title, idx, imgSrc) {
+        var parent = '.review-row';
+        var text = '<a href="#myModal" class="portfolio-link" data-toggle="modal">' +
+            '<div class="board-container" id="board_' + idx + '">' +
+            '<img src="' + imgSrc + '">' +
+            '<span>' + title + '</span>' +
+            '</div>' +
+            '</a>';
+        $(parent).append(text);
+    }
 
-	$(document).ready(function() {
-		var page = 0;
-		var win = $(window);
+    $(document).ready(function () {
+        var page = 0;
+        var win = $(window);
 
-		win.scroll(function() {
-			if($(document).height() - win.height() == win.scrollTop()) {
-				setTimeout(function() { callAjax(page++) }, 600);
-			}
-		})
-	});
+        win.scroll(function () {
+            if ($(document).height() - win.height() == win.scrollTop()) {
+                setTimeout(function () {
+                    callAjax(page++)
+                }, 600);
+            }
+        })
+    });
 
-	$(document).on('click', '.board-container', function() {
-		var getid = $(this).attr('id');
-		var idx = getid.split('_')[1];
+    $(document).on('click', '.board-container', function () {
+        var getid = $(this).attr('id');
+        var idx = getid.split('_')[1];
 
-		$.ajax({
-			url: '/board/' + idx,
-			type: 'GET',
-				success : function (data) {
-					var title = data['title'];
-					var content = data['content'];
-					var date = data['date'];
-					var imgSrc;
+        $.ajax({
+            url: './board/' + idx,
+            type: 'GET',
+            success: function (data) {
+                var title = data['title'];
+                var content = data['content'];
+                var date = data['date'];
+                var imgSrc;
 
-					try {
-						imgSrc = data['imageFileList'][0]['src'];
-					} catch(e) {
-						imgSrc = "./img/default.png";
-					}
+                try {
+                    imgSrc = data['imageFileList'][0]['src'];
+                } catch (e) {
+                    imgSrc = "./img/default.png";
+                }
 
-					$('#board_title').text(title);
-					$('#board_img').attr("src", imgSrc);
-					$('#board_content').text(content);
-			}
-		});
-	});
+                $('#board_title').text(title);
+                $('#board_img').attr("src", imgSrc);
+                $('#board_content').text(content);
+            }
+        });
+    });
 
-	function checkSession() {
-		$.ajax({
-			type: "GET",
-			url: "/member/getName",
-			dataType: 'text',
-			success: function (data) {
-				showName(data);
-				showReviewWrite(data);
-			}
-		});
-	}
+    function checkSession() {
+        $.ajax({
+            type: "GET",
+            url: "./member/getName",
+            dataType: 'text',
+            success: function (data) {
+                showName(data);
+                showReviewWrite(data);
+            }
+        });
+    }
 
-	function showName(data) {
-		if (data == "") {
-			$('#unlogin').show();
-			$('#logined').hide();
-		} else {
-			$('#unlogin').hide();
-			$('#logined').show();
+    function showName(data) {
+        if (data == "") {
+            $('#unlogin').show();
+            $('#logined').hide();
+        } else {
+            $('#unlogin').hide();
+            $('#logined').show();
 
-			var msg = data + '님 환영합니다.';
+            var msg = data + '님 환영합니다.';
 
-			$('#memberName').text(msg);
-		}
-	}
+            $('#memberName').text(msg);
+        }
+    }
 
-	function showReviewWrite(data) {
-		if(data == "")
-			$('#btn_review_write').hide();
-		else
-			$('#btn_review_write').show();
-	}
+    function showReviewWrite(data) {
+        if (data == "")
+            $('#btn_review_write').hide();
+        else
+            $('#btn_review_write').show();
+    }
 
-	$('#frmReview').submit(function(event) {
-		event.preventDefault();
+    $('#frmReview').submit(function (event) {
+        event.preventDefault();
 
-		var fd = new FormData($(this)[0]);
+        var fd = new FormData($(this)[0]);
 
-		$.ajax({
-			url: "/board/write",
-			type: "POST",
-			data: fd,
-			async: false,
-			cache: false,
-			contentType: false,
-			processData: false,
-			success: function(data) {
-				alert('게시물이 등록되었습니다.');
-				$('#reviewWriteModal').modal('toggle');
-			},
-			error: function() {
-				alert('에러가 발생하였습니다.');
-			}
-		})
-	});
-	checkSession();
+        $.ajax({
+            url: "./board/write",
+            type: "POST",
+            data: fd,
+//            async: false,
+//            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                alert('게시물이 등록되었습니다.');
+                $('#reviewWriteModal').modal('toggle');
+            },
+            error: function () {
+                alert('에러가 발생하였습니다.');
+            }
+        })
+    });
+    checkSession();
 </script>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC19ZjyDOsyPWdRbHX_3pVYewO09LaoT64"></script>
-<script src="/js/map.js"></script>
-<script src="/js/plan.js"></script>
+<script src="./js/map.js"></script>
+<script src="./js/plan.js"></script>
 
 </html>
